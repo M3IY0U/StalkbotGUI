@@ -6,27 +6,27 @@ namespace StalkbotGUI.Stalkbot.Utilities
     public sealed class Config
     {
         // Discord
-        public string Token { get; set; }
-        public string Prefix { get; set; }
+        public string Token { get; set; } = "changeme";
+        public string Prefix { get; set; } = "change!";
         // Webcam
-        public bool CamEnabled { get; set; }
-        public int CamTimer { get; set; }
-        public int CamWidth { get; set; }
-        public int CamHeight { get; set; }
-        public int DefaultCam { get; set; }
+        public bool CamEnabled { get; set; } = false;
+        public int CamTimer { get; set; } = 3000;
+        public int CamWidth { get; set; } = 1280;
+        public int CamHeight { get; set; } = 720;
+        public int DefaultCam { get; set; } = 0;
         // Screenshot
-        public bool SsEnabled { get; set; }
-        public double BlurAmount { get; set; }
+        public bool SsEnabled { get; set; } = false;
+        public double BlurAmount { get; set; } = 1;
         // Sounds
-        public bool TtsEnabled { get; set; }
-        public bool PlayEnabled { get; set; }
-        public double Timeout { get; set; }
+        public bool TtsEnabled { get; set; } = false;
+        public bool PlayEnabled { get; set; } = false;
+        public double Timeout { get; set; } = 10000;
         // Misc
-        public bool ProcessesEnabled { get; set; }
-        public string FolderPath { get; set; }
-        public bool ClipboardEnabled { get; set; }
-        public bool AutoStartDiscord { get; set; }
-        public bool CloseToTray { get; set; }
+        public bool ProcessesEnabled { get; set; } = false;
+        public string FolderPath { get; set; } = "";
+        public bool ClipboardEnabled { get; set; } = false;
+        public bool AutoStartDiscord { get; set; } = false;
+        public bool CloseToTray { get; set; } = false;
 
         // Actual Config 
         private static Config _instance;
@@ -35,7 +35,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                     LoadConfig();
                 return _instance;
             }
@@ -49,7 +49,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
 
         public static void LoadConfig()
             => _instance = File.Exists("config.json")
-                ? JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json")) 
+                ? JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"))
                 : new Config();
 
         public bool IsEnabled(string command)
