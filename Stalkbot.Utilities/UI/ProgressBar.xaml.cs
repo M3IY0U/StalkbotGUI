@@ -7,11 +7,18 @@ namespace StalkbotGUI.Stalkbot.Utilities.UI
     /// </summary>
     public partial class ProgressBar : Window
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ProgressBar()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Updates the progressbar
+        /// </summary>
+        /// <param name="percentage">New value</param>
         public void UpdateProgress(int percentage)
         {
             // When progress is reported, update the progress bar control.

@@ -2,6 +2,9 @@
 
 namespace StalkbotGUI.Stalkbot.Utilities
 {
+    /// <summary>
+    /// Reusable brushes
+    /// </summary>
     internal static class Constants
     {
         public static readonly SolidColorBrush EnabledBrush = new SolidColorBrush(Colors.DarkGreen);

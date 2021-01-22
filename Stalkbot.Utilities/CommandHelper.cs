@@ -8,11 +8,23 @@ using DSharpPlus.EventArgs;
 
 namespace StalkbotGUI.Stalkbot.Utilities
 {
+    /// <summary>
+    /// Class containing helper methods for commands
+    /// </summary>
     public class CommandHelper
     {
+        /// <summary>
+        /// Indexes the files if there was a path provided
+        /// </summary>
+        /// <returns>An array of indexed files</returns>
         public static string[] IndexFiles()
             => !string.IsNullOrEmpty(Config.Instance.FolderPath) ? SearchFiles(Config.Instance.FolderPath) : new[] { "" };
 
+        /// <summary>
+        /// Recursive function that crawls through subdirectories
+        /// </summary>
+        /// <param name="path">Root directory to index</param>
+        /// <returns>File array of the files in the current directory</returns>
         private static string[] SearchFiles(string path)
         {
             var files = Directory.GetFiles(path);
@@ -22,6 +34,12 @@ namespace StalkbotGUI.Stalkbot.Utilities
                 : dirs.Aggregate(files, (current, dir) => current.Union(SearchFiles(dir)).ToArray());
         }
 
+        /// <summary>
+        /// Plays an alert a recognized command has been triggered 
+        /// </summary>
+        /// <param name="sender">The discord client that fired the command</param>
+        /// <param name="e">Event args</param>
+        /// <returns></returns>
         public static Task PlayAlert(DiscordClient sender, MessageCreateEventArgs e)
         {
             // check if message was a command

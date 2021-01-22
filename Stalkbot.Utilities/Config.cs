@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace StalkbotGUI.Stalkbot.Utilities
 {
+    /// <summary>
+    /// Config data class
+    /// </summary>
     public sealed class Config
     {
         // Discord
@@ -31,6 +34,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
         // Actual Config 
         private static Config _instance;
 
+        // Singleton pattern
         public static Config Instance
         {
             get
@@ -41,17 +45,31 @@ namespace StalkbotGUI.Stalkbot.Utilities
             }
         }
 
+        /// <summary>
+        /// Reloads the config by calling the constructor again
+        /// </summary>
         public void ReloadConfig()
             => _instance = new Config();
 
+        /// <summary>
+        /// Writes current config to file
+        /// </summary>
         public void SaveConfig()
             => File.WriteAllText("config.json", JsonConvert.SerializeObject(this, Formatting.Indented));
 
+        /// <summary>
+        /// Load config from file or creates a default one
+        /// </summary>
         public static void LoadConfig()
             => _instance = File.Exists("config.json")
                 ? JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"))
                 : new Config();
 
+        /// <summary>
+        /// Converts a string to the corresponding toggle
+        /// </summary>
+        /// <param name="command">The string to convert</param>
+        /// <returns>The correct toggle for the string</returns>
         public bool IsEnabled(string command)
         {
             switch (command)

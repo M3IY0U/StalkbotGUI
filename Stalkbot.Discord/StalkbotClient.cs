@@ -10,13 +10,34 @@ using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI.Stalkbot.Discord
 {
+    /// <summary>
+    /// Client responsible for interacting with discord
+    /// </summary>
     public class StalkbotClient
     {
+        /// <summary>
+        /// The actual discord client
+        /// </summary>
         private readonly DiscordClient _client;
+        
+        /// <summary>
+        /// Command handler
+        /// </summary>
         private CommandsNextExtension _commandsNext;
+
+        /// <summary>
+        /// Holds the last message if the user wants it deleted
+        /// </summary>
         private DiscordMessage _lastResponse;
+
+        /// <summary>
+        /// Flag keeping track of the bots status
+        /// </summary>
         public bool IsRunning { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public StalkbotClient()
         {
             // init actual bot client
@@ -42,6 +63,10 @@ namespace StalkbotGUI.Stalkbot.Discord
             _client.MessageCreated += CommandHelper.PlayAlert;
         }
 
+        /// <summary>
+        /// Deletes the last message the bot sent
+        /// </summary>
+        /// <returns>The built task</returns>
         public async Task DeleteLastMessage()
         {
             if (_lastResponse == null)
@@ -50,9 +75,13 @@ namespace StalkbotGUI.Stalkbot.Discord
             _lastResponse = null;
         }
 
+        /// <summary>
+        /// Starts or stops discord
+        /// </summary>
+        /// <returns>The built task</returns>
         public async Task StartStopDiscord()
         {
-            if (_client.Ping == 0)
+            if (_client.Ping == 0) //TODO: I'm not sure if ping is all that reliable but for now it works
             {
                 Logger.Log("Connecting to Discord...", LogLevel.Info);
                 await _client.ConnectAsync();

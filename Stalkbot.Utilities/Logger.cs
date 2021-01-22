@@ -5,10 +5,26 @@ using System.Windows.Media;
 
 namespace StalkbotGUI.Stalkbot.Utilities
 {
+    /// <summary>
+    /// Logger
+    /// </summary>
     public static class Logger
     {
+        /// <summary>
+        /// Contains the actual log texts
+        /// </summary>
         private static TextBlock _logText;
+        
+        /// <summary>
+        /// Log "container"
+        /// </summary>
         private static ScrollViewer _viewer;
+        
+        /// <summary>
+        /// Logs a message to the window
+        /// </summary>
+        /// <param name="message">The message to be logged</param>
+        /// <param name="level">The severity of the message</param>
         public static void Log(string message, LogLevel level)
         {
             if (_logText == null) throw new Exception("Logger not initialized!");
@@ -17,12 +33,22 @@ namespace StalkbotGUI.Stalkbot.Utilities
             _viewer.ScrollToEnd();
         }
 
+        /// <summary>
+        /// Binds the logger to the window controls
+        /// </summary>
+        /// <param name="textBlock">The log texts</param>
+        /// <param name="scrollViewer">The log "container"</param>
         public static void Init(ref TextBlock textBlock, ref ScrollViewer scrollViewer)
         {
             _logText = textBlock;
             _viewer = scrollViewer;
         }
 
+        /// <summary>
+        /// Level to color converter
+        /// </summary>
+        /// <param name="level">Log severity</param>
+        /// <returns>A brush with a color indicating the severity</returns>
         private static SolidColorBrush Color(LogLevel level)
         {
             switch (level)
@@ -39,6 +65,9 @@ namespace StalkbotGUI.Stalkbot.Utilities
         }
     }
 
+    /// <summary>
+    /// Severity levels
+    /// </summary>
     public enum LogLevel : ushort
     {
         Info = 0,

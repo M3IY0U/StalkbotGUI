@@ -16,7 +16,14 @@ namespace StalkbotGUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Client responsible for everything related to "stalking"
+        /// </summary>
         private readonly StalkbotClient _client;
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -31,19 +38,34 @@ namespace StalkbotGUI
         }
         
         #region ButtonHandlers
+        /// <summary>
+        /// Handles clicking the off/on button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
         private async void OnOffButton_Click(object sender, RoutedEventArgs e)
         {
             await _client.StartStopDiscord();
             OnOffButton.Background = new SolidColorBrush(_client.IsRunning ? Colors.DarkGreen : Colors.DarkRed);
             OnOffButton.Content = _client.IsRunning ? "On" : "Off";
         }
+        /// <summary>
+        /// Handles clicking the webcam toggle button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
         private void WebcamToggle_Click(object sender, RoutedEventArgs e)
         {
             Config.Instance.CamEnabled = !Config.Instance.CamEnabled;
             Logger.Log($"Webcam: {Config.Instance.CamEnabled}", LogLevel.Info);
             UiHelpers.UpdateButton("webcam", ref WebcamToggle);
         }
-        
+
+        /// <summary>
+        /// Handles clicking the screenshot toggle button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
         private void ScreenshotToggle_Click(object sender, RoutedEventArgs e)
         {
             Config.Instance.SsEnabled = !Config.Instance.SsEnabled;
@@ -51,6 +73,11 @@ namespace StalkbotGUI
             UiHelpers.UpdateButton("screenshot", ref ScreenshotToggle);
         }
 
+        /// <summary>
+        /// Handles clicking the TTS toggle button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
         private void TtsToggle_Click(object sender, RoutedEventArgs e)
         {
             Config.Instance.TtsEnabled = !Config.Instance.TtsEnabled;
@@ -58,6 +85,11 @@ namespace StalkbotGUI
             UiHelpers.UpdateButton("tts", ref TtsToggle);
         }
 
+        /// <summary>
+        /// Handles clicking the play toggle button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
         private void PlayToggle_Click(object sender, RoutedEventArgs e)
         {
             Config.Instance.PlayEnabled = !Config.Instance.PlayEnabled;
@@ -65,6 +97,11 @@ namespace StalkbotGUI
             UiHelpers.UpdateButton("play", ref PlayToggle);
         }
 
+        /// <summary>
+        /// Handles clicking the processes toggle button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
         private void ProcToggle_Click(object sender, RoutedEventArgs e)
         {
             Config.Instance.ProcessesEnabled = !Config.Instance.ProcessesEnabled;
@@ -72,6 +109,11 @@ namespace StalkbotGUI
             UiHelpers.UpdateButton("proc", ref ProcToggle);
         }
 
+        /// <summary>
+        /// Handles clicking the clipboard toggle button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
         private void ClipboardToggle_Click(object sender, RoutedEventArgs e)
         {
             Config.Instance.ClipboardEnabled = !Config.Instance.ClipboardEnabled;
@@ -79,6 +121,11 @@ namespace StalkbotGUI
             UiHelpers.UpdateButton("clipboard", ref ClipboardToggle);
         }
 
+        /// <summary>
+        /// Handles clicking the undo button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
         private async void UndoButton_Click(object sender, RoutedEventArgs e)
             => await _client.DeleteLastMessage();
 
@@ -86,6 +133,9 @@ namespace StalkbotGUI
         #endregion
 
         #region Utilities
+        /// <summary>
+        /// Colors the UI toggle buttons
+        /// </summary>
         private void InitButtons()
         {
             UiHelpers.UpdateButton("webcam", ref WebcamToggle);
@@ -96,6 +146,9 @@ namespace StalkbotGUI
             UiHelpers.UpdateButton("clipboard", ref ClipboardToggle);
         }
 
+        /// <summary>
+        /// Checks for a config and ffmpeg
+        /// </summary>
         private async void CheckRequirements()
         {
             // Check for config.json
@@ -113,6 +166,10 @@ namespace StalkbotGUI
                 Logger.Log("Successfully downloaded ffmpeg!", LogLevel.Info);
         }
 
+        /// <summary>
+        /// Downloads ffmpeg with progress bar
+        /// </summary>
+        /// <returns>Whether the download was successful</returns>
         private async Task<bool> DownloadFfmpeg()
         {
             var error = false;
