@@ -25,6 +25,9 @@ namespace StalkbotGUI
             Task.Delay(1000);
             CheckRequirements();
             _client = new StalkbotClient();
+            if (Config.Instance.AutoStartDiscord)
+                new Action(() => OnOffButton_Click(null, null))();
+            
             InitButtons();
         }
         

@@ -25,7 +25,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public bool ProcessesEnabled { get; set; }
         public string FolderPath { get; set; }
         public bool ClipboardEnabled { get; set; }
-        public bool AutoStart { get; set; }
+        public bool AutoStartDiscord { get; set; }
         public bool CloseToTray { get; set; }
 
         // Actual Config 
