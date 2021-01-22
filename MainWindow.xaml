@@ -1,0 +1,45 @@
+﻿<Window x:Class="StalkbotGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StalkbotGUI"
+        mc:Ignorable="d"
+        Title="Stalkbot" Width="575" MinWidth="575" SizeToContent="WidthAndHeight" Background="#FF1A1A1A" ResizeMode="CanMinimize">
+    <Grid Name="RootGrid">
+        <Grid.LayoutTransform>
+            <ScaleTransform CenterX="0" CenterY="0" ScaleX="1.5" ScaleY="1.5"/>
+        </Grid.LayoutTransform>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="1.618*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="OnOffButton" Content="Off" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,5" Grid.ColumnSpan="2"/>
+            <Button Grid.Row="1" Grid.Column="0" x:Name="WebcamToggle" Content="Webcam" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5" Click="WebcamToggle_Click"/>
+            <Button Grid.Row="1" Grid.Column="1" x:Name="ScreenshotToggle" Content="Screenshot" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5"/>
+            <Button Grid.Row="2" Grid.Column="0" x:Name="TtsToggle" Content="TTS" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5"/>
+            <Button Grid.Row="2" Grid.Column="1" x:Name="PlayToggle" Content="Play" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5"/>
+            <Button Grid.Row="3" Grid.Column="0" x:Name="ProcToggle" Content="Processes" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5"/>
+            <Button Grid.Row="3" Grid.Column="1" x:Name="ClipboardToggle" Content="Clipboard" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5"/>
+            <Button Grid.Row="4" Grid.Column="0" x:Name="ConfigButton" Content="Config" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,5" Grid.ColumnSpan="2"/>
+        </Grid>
+        <ScrollViewer x:Name="LogView" Grid.Column="1" Background="Black" Height="{Binding ElementName=RootGrid, Path=ActualHeight }" VerticalScrollBarVisibility="Auto">
+            <TextBlock Name="LogText"  TextWrapping="NoWrap" Text="" Background="Black" Foreground="White" FontSize="12"/>
+        </ScrollViewer>
+
+    </Grid>
+</Window>

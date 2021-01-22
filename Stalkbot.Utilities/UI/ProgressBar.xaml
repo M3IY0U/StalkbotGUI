@@ -1,0 +1,25 @@
+﻿<Window x:Class="StalkbotGUI.Stalkbot.Utilities.UI.ProgressBar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="ProgressBarWindow" Height="80" Width="400">
+    <Grid>
+        <ProgressBar Grid.Column="0" Grid.Row="0"
+                     Name="PbLoad"
+                     Visibility="Visible"
+                     Margin="12, 4" Height="24"
+                     Value="0" Minimum="0" Maximum="100"/>
+        <StackPanel Grid.Column="0" Grid.Row="0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- TextBlock displayed in the center of the Progress Bar -->
+            <!-- Indicates progress as a percentage -->
+            <!-- Binds 'Value' property of ProgressBar control to TextBlock Text -->
+            <TextBlock Name="TbProgress" Visibility="Visible"
+                       Text="{Binding ElementName=PbLoad, Path=Value, StringFormat={}{0:0}%}" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </StackPanel>
+    </Grid>
+</Window>
