@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media;
 using StalkbotGUI.Stalkbot.Discord;
 using StalkbotGUI.Stalkbot.Utilities;
@@ -20,7 +22,8 @@ namespace StalkbotGUI
         /// Client responsible for everything related to "stalking"
         /// </summary>
         private readonly StalkbotClient _client;
-        
+        private readonly NotifyIcon _notifyIcon;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -33,10 +36,17 @@ namespace StalkbotGUI
             _client = new StalkbotClient();
             if (Config.Instance.AutoStartDiscord)
                 new Action(() => OnOffButton_Click(null, null))();
-            
+
             InitButtons();
+            _notifyIcon = new NotifyIcon
+            {
+                BalloonTipText = @"Stalkbot is still running!",
+                Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
+            };
+            _notifyIcon.DoubleClick += NotifyIconOnDoubleClick;
         }
-        
+
+
         #region ButtonHandlers
         /// <summary>
         /// Handles clicking the off/on button
@@ -197,6 +207,32 @@ namespace StalkbotGUI
             });
             return !error;
         }
+
+        /// <summary>
+        /// Restores from tray
+        /// </summary>
+        /// <param name="sender">NotifyIcon object</param>
+        /// <param name="e">Event args</param>
+        private void NotifyIconOnDoubleClick(object sender, EventArgs e)
+        {
+            Show();
+            WindowState = WindowState.Normal;
+            _notifyIcon.Visible = false;
+        }
+
+        /// <summary>
+        /// Minimizes to tray
+        /// </summary>
+        /// <param name="sender">Window object</param>
+        /// <param name="e">Event args</param>
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (WindowState != WindowState.Minimized || !Config.Instance.MinimizeToTray) return;
+            Hide();
+            _notifyIcon.Visible = true;
+            _notifyIcon.ShowBalloonTip(1000);
+        }
+
         #endregion
     }
 }

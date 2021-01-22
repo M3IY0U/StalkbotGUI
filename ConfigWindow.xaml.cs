@@ -24,6 +24,8 @@ namespace StalkbotGUI
             WidthInput.Text = $"{Config.Instance.CamWidth}";
             HeightInput.Text = $"{Config.Instance.CamHeight}";
             CamDelayInput.Text = $"{Config.Instance.CamTimer}";
+            AutoStartCheckBox.IsChecked = Config.Instance.AutoStartDiscord;
+            MinimizeCheckBox.IsChecked= Config.Instance.MinimizeToTray;
             var devices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             var webcams = new List<string>();
             for (var i = devices.Count - 1; i >= 0; i--)
@@ -119,6 +121,18 @@ namespace StalkbotGUI
         {
             if(!string.IsNullOrEmpty(DurationInput.Text))
                 Config.Instance.Timeout = Convert.ToDouble(DurationInput.Text);
+        }
+
+        private void MinimizeCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if(MinimizeCheckBox.IsChecked.HasValue)
+                Config.Instance.MinimizeToTray = MinimizeCheckBox.IsChecked.Value;
+        }
+
+        private void AutoStartCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (AutoStartCheckBox.IsChecked.HasValue)
+                Config.Instance.AutoStartDiscord = AutoStartCheckBox.IsChecked.Value;
         }
     }
 }

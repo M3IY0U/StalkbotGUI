@@ -4,7 +4,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             mc:Ignorable="d"
-            Title="Stalkbot" Width="575" MinWidth="575" SizeToContent="WidthAndHeight" Background="#FF1A1A1A" ResizeMode="CanMinimize" FontWeight="DemiBold">
+            Title="Stalkbot" Width="575" MinWidth="575" SizeToContent="WidthAndHeight" Background="#FF1A1A1A" ResizeMode="CanMinimize" FontWeight="DemiBold" StateChanged="Window_StateChanged">
     <Grid Name="RootGrid">
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0" ScaleX="1.5" ScaleY="1.5"/>

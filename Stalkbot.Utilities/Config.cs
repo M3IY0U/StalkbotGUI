@@ -29,7 +29,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public string FolderPath { get; set; } = "";
         public bool ClipboardEnabled { get; set; } = false;
         public bool AutoStartDiscord { get; set; } = false;
-        public bool CloseToTray { get; set; } = false;
+        public bool MinimizeToTray { get; set; } = false;
 
         // Actual Config 
         private static Config _instance;
