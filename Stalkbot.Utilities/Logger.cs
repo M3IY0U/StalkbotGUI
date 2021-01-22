@@ -25,24 +25,17 @@ namespace StalkbotGUI.Stalkbot.Utilities
 
         private static SolidColorBrush Color(LogLevel level)
         {
-            Color color;
             switch (level)
             {
                 case LogLevel.Info:
-                    color = Colors.Green;
-                    break;
+                    return Constants.LogInfoBrush;
                 case LogLevel.Error:
-                    color = Colors.Red;
-                    break;
+                    return Constants.LogErrorBrush;
                 case LogLevel.Warning:
-                    color = Colors.Yellow;
-                    break;
+                    return Constants.LogWarningBrush;
                 default:
-                    color = Colors.White;
-                    break;
+                    return Constants.DefaultBrush;
             }
-
-            return new SolidColorBrush(color);
         }
     }
 

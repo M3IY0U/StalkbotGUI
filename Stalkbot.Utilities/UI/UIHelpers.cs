@@ -11,9 +11,6 @@ namespace StalkbotGUI.Stalkbot.Utilities.UI
     public class UiHelpers
     {
         public static void UpdateButton(string which, ref Button button)
-        {
-            var color = Config.Instance.IsEnabled(which) ? Colors.DarkGreen :Colors.DarkRed;
-            button.Background = new SolidColorBrush(color);
-        }
+            => button.Background = Config.Instance.IsEnabled(which) ? Constants.EnabledBrush : Constants.DisabledBrush;
     }
 }

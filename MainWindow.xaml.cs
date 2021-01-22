@@ -7,7 +7,6 @@ using System.Windows.Media;
 using StalkbotGUI.Stalkbot.Discord;
 using StalkbotGUI.Stalkbot.Utilities;
 using StalkbotGUI.Stalkbot.Utilities.UI;
-using Config = StalkbotGUI.Stalkbot.Utilities.Config;
 using ProgressBar = StalkbotGUI.Stalkbot.Utilities.UI.ProgressBar;
 
 namespace StalkbotGUI
@@ -17,7 +16,7 @@ namespace StalkbotGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private StalkbotClient _client;
+        private readonly StalkbotClient _client;
         public MainWindow()
         {
             InitializeComponent();
