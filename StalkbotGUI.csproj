@@ -157,6 +157,7 @@
     <Compile Include="Stalkbot.Utilities\CommandHelper.cs" />
     <Compile Include="Stalkbot.Utilities\Config.cs" />
     <Compile Include="Stalkbot.Utilities\Logger.cs" />
+    <Compile Include="Stalkbot.Utilities\UI\UIHelpers.cs" />
     <Compile Include="Stalkbot.Utilities\UI\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
