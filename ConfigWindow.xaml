@@ -1,0 +1,111 @@
+﻿<Window x:Class="StalkbotGUI.ConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StalkbotGUI"
+        mc:Ignorable="d"
+        Title="ConfigWindow" SizeToContent="WidthAndHeight" Background="#FF1A1A1A">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem >
+                <TabItem.Header>
+                    <TextBlock Text="Webcam"></TextBlock>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Camera" HorizontalAlignment="Right"/>
+                        <ComboBox Grid.Column="1" HorizontalAlignment="Left" MinWidth="95" Margin="5,0,0,0" Name="CamSelector"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Width"/>
+                        <TextBox Grid.Column="1" TextAlignment="Center" Name="WidthInput"/>
+                        <Label Grid.Column="2" Content="Height" />
+                        <TextBox Grid.Column="3" TextAlignment="Center" Name="HeightInput"/>
+                    </Grid>
+                    <Frame Width="320" Height="180" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="2"/>
+                    <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Webcam Delay (ms)" HorizontalAlignment="Right"></Label>
+                        <TextBox Grid.Column="1" Width="50" HorizontalAlignment="Left" TextAlignment="Center" Padding="5,0,0,0" Name="CamDelayInput"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem >
+                <TabItem.Header>
+                    <TextBlock Text="Screenshot"></TextBlock>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="193*"/>
+                        <ColumnDefinition Width="23*"/>
+                        <ColumnDefinition Width="104*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Blur Amount" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Margin="0,0,5,0" Grid.ColumnSpan="2" Name="BlurInput"/>
+                    <Frame Width="320" Height="180" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" Name="ScreenPreview"/>
+                </Grid>
+            </TabItem>
+            <TabItem >
+                <TabItem.Header>
+                    <TextBlock Text="Play/TTS"></TextBlock>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Max Duration" HorizontalAlignment="Right" BorderThickness="0,0,5,0"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Left" Name="DurationInput"/>
+                </Grid>
+            </TabItem>
+            <TabItem >
+                <TabItem.Header>
+                    <TextBlock Text="Folder"></TextBlock>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="Current Folder: " HorizontalAlignment="Center" Name="FolderLabel"/>
+                    <Button Grid.Row="1" Content="Pick Folder" Width="75" Name="FolderSelect"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button Grid.Row="1" Content="Save Config" Width="75" Margin="0,5" ></Button>
+    </Grid>
+</Window>

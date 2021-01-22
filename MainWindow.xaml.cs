@@ -129,6 +129,16 @@ namespace StalkbotGUI
         private async void UndoButton_Click(object sender, RoutedEventArgs e)
             => await _client.DeleteLastMessage();
 
+        /// <summary>
+        /// Handles clicking the config button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
+        private void ConfigButton_Click(object sender, RoutedEventArgs e)
+        {
+            var cfg = new ConfigWindow();
+            cfg.Show();
+        }
 
         #endregion
 
