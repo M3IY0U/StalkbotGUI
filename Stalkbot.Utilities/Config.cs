@@ -27,34 +27,28 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public bool ClipboardEnabled { get; set; }
 
         // Actual Config 
-        private static readonly object ConfigLock = new object();
         private static Config _instance;
 
         public static Config Instance
         {
             get
             {
-                lock (ConfigLock)
-                {
-                    if (_instance == null)
-                        _instance = new Config();
-                }
-
+                if(_instance == null)
+                    LoadConfig();
                 return _instance;
             }
         }
-
-        private Config()
-            => _instance = File.Exists("config.json") 
-                ? JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json")) 
-                : null;
-        
 
         public void ReloadConfig()
             => _instance = new Config();
 
         public void SaveConfig()
             => File.WriteAllText("config.json", JsonConvert.SerializeObject(this, Formatting.Indented));
+
+        public static void LoadConfig()
+            => _instance = File.Exists("config.json")
+                ? JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json")) 
+                : new Config();
 
         public bool IsEnabled(string command)
         {

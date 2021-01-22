@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using StalkbotGUI.Stalkbot.Discord;
 using StalkbotGUI.Stalkbot.Utilities;
-using StalkbotGUI.Stalkbot.Utilities.UI;
 using Config = StalkbotGUI.Stalkbot.Utilities.Config;
 using ProgressBar = StalkbotGUI.Stalkbot.Utilities.UI.ProgressBar;
 
@@ -27,11 +16,14 @@ namespace StalkbotGUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private StalkbotClient _client;
         public MainWindow()
         {
             InitializeComponent();
             Logger.BindToBlock(ref LogText);
             CheckRequirements();
+            _client= new StalkbotClient();
+            
         }
 
         private void CheckRequirements()
@@ -72,6 +64,21 @@ namespace StalkbotGUI
         private void WebcamToggle_Click(object sender, RoutedEventArgs e)
         {
             Logger.Log("Webcam clicked", LogLevel.Info);
+        }
+
+        private async void OnOffButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (OnOffButton.Content.ToString() == "On")
+            {
+                OnOffButton.Background = new SolidColorBrush(Colors.DarkRed);
+                OnOffButton.Content = "Off";
+            }
+            else
+            {
+                OnOffButton.Background = new SolidColorBrush(Colors.DarkGreen);
+                OnOffButton.Content = "On";
+            }
+            await _client.StartStopDiscord();
         }
     }
 }

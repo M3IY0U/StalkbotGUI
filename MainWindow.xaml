@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StalkbotGUI"
         mc:Ignorable="d"
         Title="Stalkbot" Width="575" MinWidth="575" SizeToContent="WidthAndHeight" Background="#FF1A1A1A" ResizeMode="CanMinimize">
     <Grid Name="RootGrid">
@@ -28,7 +27,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" x:Name="OnOffButton" Content="Off" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,5" Grid.ColumnSpan="2"/>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="OnOffButton" Content="Off" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,5" Grid.ColumnSpan="2" Click="OnOffButton_Click"/>
             <Button Grid.Row="1" Grid.Column="0" x:Name="WebcamToggle" Content="Webcam" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5" Click="WebcamToggle_Click"/>
             <Button Grid.Row="1" Grid.Column="1" x:Name="ScreenshotToggle" Content="Screenshot" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5"/>
             <Button Grid.Row="2" Grid.Column="0" x:Name="TtsToggle" Content="TTS" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5"/>
