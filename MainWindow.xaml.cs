@@ -46,7 +46,6 @@ namespace StalkbotGUI
             _notifyIcon.DoubleClick += NotifyIconOnDoubleClick;
         }
 
-
         #region ButtonHandlers
         /// <summary>
         /// Handles clicking the off/on button
@@ -231,6 +230,16 @@ namespace StalkbotGUI
             Hide();
             _notifyIcon.Visible = true;
             _notifyIcon.ShowBalloonTip(1000);
+        }
+
+        /// <summary>
+        /// Disposes of the client on close
+        /// </summary>
+        /// <param name="sender">Window object</param>
+        /// <param name="e">Event args</param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _client.Dispose();
         }
 
         #endregion

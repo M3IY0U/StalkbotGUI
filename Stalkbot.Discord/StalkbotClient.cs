@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -81,24 +82,41 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// <returns>The built task</returns>
         public async Task StartStopDiscord()
         {
-            if (_client.Ping == 0) //TODO: I'm not sure if ping is all that reliable but for now it works
+            try
             {
-                Logger.Log("Connecting to Discord...", LogLevel.Info);
-                await _client.ConnectAsync();
-                await Task.Delay(2000);
-                await _client.UpdateStatusAsync(new DiscordActivity(
-                    $"{_client.CurrentApplication.Owners.First().Username}",
-                    ActivityType.Watching));
-                Logger.Log($"Successfully connected to Discord on {_client.Guilds.Count} Servers:\n\t {string.Join("\n\t", _client.Guilds.Values)}", LogLevel.Info);
-                IsRunning = true;
+                if (_client.Ping == 0) //TODO: I'm not sure if ping is all that reliable but for now it works
+                {
+                    Logger.Log("Connecting to Discord...", LogLevel.Info);
+                    await _client.ConnectAsync();
+                    await Task.Delay(2000);
+                    await _client.UpdateStatusAsync(new DiscordActivity(
+                        $"{_client.CurrentApplication.Owners.First().Username}",
+                        ActivityType.Watching));
+                    Logger.Log($"Successfully connected to Discord on {_client.Guilds.Count} Servers:\n\t{string.Join("\n\t", _client.Guilds.Values)}", LogLevel.Info);
+                    IsRunning = true;
+                }
+                else
+                {
+                    Logger.Log("Disconnecting from Discord...", LogLevel.Info);
+                    await _client.DisconnectAsync();
+                    IsRunning = false;
+                    Logger.Log("Successfully disconnected", LogLevel.Info);
+                }
             }
-            else
+            catch (Exception e)
             {
-                Logger.Log("Disconnecting from Discord...", LogLevel.Info);
-                await _client.DisconnectAsync();
-                IsRunning = false;
-                Logger.Log("Successfully disconnected", LogLevel.Info);
+                Logger.Log($"Error logging into Discord: {e.Message}", LogLevel.Error);
             }
+        }
+
+        /// <summary>
+        /// Disconnects and disposes of members
+        /// </summary>
+        public async void Dispose()
+        {
+            await _client.DisconnectAsync();
+            _client.Dispose();
+            _commandsNext = null;
         }
     }
 }

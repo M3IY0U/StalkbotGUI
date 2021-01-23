@@ -106,16 +106,21 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="AutoStartCheckBox" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Margin="0,5,0,0" Click="AutoStartCheckBox_Click"/>
-                    <Label Grid.Column="0" Grid.Row="1" Content="Autostart Discord Client"/>
-                    <CheckBox x:Name="MinimizeCheckBox" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Margin="0,5,0,0" Click="MinimizeCheckBox_Click"/>
-                    <Label Grid.Column="1" Grid.Row="1" Content="Minimize to system tray"/>
-
+                    <Label Grid.Column="0" Grid.Row="0" Content="Bot Token" HorizontalAlignment="Right"/>
+                    <TextBox x:Name="TokenInput" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" MinWidth="130" MaxWidth="130" Margin="5,0" TextChanged="TokenInput_TextChanged" ClipToBounds="True"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Bot Prefix" HorizontalAlignment="Right"/>
+                    <TextBox x:Name="PrefixInput" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" MinWidth="50" Margin="5,0" TextChanged="PrefixInput_TextChanged"/>
+                    <CheckBox x:Name="AutoStartCheckBox" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Margin="0,5,0,0" Click="AutoStartCheckBox_Click"/>
+                    <Label Grid.Column="0" Grid.Row="3" Content="Autostart Discord Client"/>
+                    <CheckBox x:Name="MinimizeCheckBox" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" Margin="0,5,0,0" Click="MinimizeCheckBox_Click"/>
+                    <Label Grid.Column="1" Grid.Row="3" Content="Minimize to system tray"/>
                 </Grid>
             </TabItem>
         </TabControl>

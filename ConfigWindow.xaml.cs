@@ -24,6 +24,8 @@ namespace StalkbotGUI
             WidthInput.Text = $"{Config.Instance.CamWidth}";
             HeightInput.Text = $"{Config.Instance.CamHeight}";
             CamDelayInput.Text = $"{Config.Instance.CamTimer}";
+            PrefixInput.Text = Config.Instance.Prefix;
+            TokenInput.Text = Config.Instance.Token;
             AutoStartCheckBox.IsChecked = Config.Instance.AutoStartDiscord;
             MinimizeCheckBox.IsChecked= Config.Instance.MinimizeToTray;
             var devices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -123,16 +125,42 @@ namespace StalkbotGUI
                 Config.Instance.Timeout = Convert.ToDouble(DurationInput.Text);
         }
 
+        /// <summary>
+        /// Handles checkbox changes for minimizing
+        /// </summary>
+        /// <param name="sender">Checkbox object</param>
+        /// <param name="e">Event args</param>
         private void MinimizeCheckBox_Click(object sender, RoutedEventArgs e)
         {
             if(MinimizeCheckBox.IsChecked.HasValue)
                 Config.Instance.MinimizeToTray = MinimizeCheckBox.IsChecked.Value;
         }
 
+        /// <summary>
+        /// Handles checkbox changes for auto starting
+        /// </summary>
+        /// <param name="sender">Checkbox object</param>
+        /// <param name="e">Event args</param>
         private void AutoStartCheckBox_Click(object sender, RoutedEventArgs e)
         {
             if (AutoStartCheckBox.IsChecked.HasValue)
                 Config.Instance.AutoStartDiscord = AutoStartCheckBox.IsChecked.Value;
         }
+
+        /// <summary>
+        /// Handles text changing in the token input
+        /// </summary>
+        /// <param name="sender">Textbox object</param>
+        /// <param name="e"></param>
+        private void TokenInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) 
+            => Config.Instance.Token = TokenInput.Text;
+
+        /// <summary>
+        /// Handles text changing in the prefix input
+        /// </summary>
+        /// <param name="sender">Textbox input</param>
+        /// <param name="e">Event args</param>
+        private void PrefixInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) 
+            => Config.Instance.Prefix = PrefixInput.Text;
     }
 }
