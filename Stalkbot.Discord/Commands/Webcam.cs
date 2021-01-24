@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AForge.Video.DirectShow;
 using DSharpPlus.CommandsNext;
@@ -31,6 +32,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
              // init capture
             var capture =
                 new VideoCaptureDevice(Constants.Cameras[camIndex].MonikerString);
+            capture.VideoResolution = TrySelectRes(capture);
+
             capture.Start();
             
             // wait for configured time
@@ -50,6 +53,21 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             // send/update message and delete file from disk
             StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync("webcam.png"));
             File.Delete("webcam.png");
+        }
+
+        /// <summary>
+        /// Tries to set the resolution to the config values, otherwise returns highest option
+        /// </summary>
+        /// <param name="device">The device to check</param>
+        /// <returns>The desired capabilities/resolution</returns>
+        private static VideoCapabilities TrySelectRes(VideoCaptureDevice device)
+        {
+            foreach (var cap in device.VideoCapabilities)
+            {
+                if (cap.FrameSize.Width == Config.Instance.CamWidth && cap.FrameSize.Height == Config.Instance.CamHeight) 
+                    return cap;
+            }
+            return device.VideoCapabilities.Last();
         }
 
         /// <summary>
