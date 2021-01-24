@@ -35,7 +35,12 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 }
             }
 
-            StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync(file, file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1)));
+            var fileName = file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+            Logger.Log($"Folder requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})" +
+                       $"\n\t=> Sending file \"{fileName}\"",
+                LogLevel.Info);
+
+            StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync(file, fileName));
         }
     }
 }
