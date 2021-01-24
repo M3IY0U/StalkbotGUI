@@ -46,6 +46,22 @@ namespace StalkbotGUI.Stalkbot.Utilities
         }
 
         /// <summary>
+        /// Returns the config in a neatly formatted way
+        /// </summary>
+        /// <returns>A string of relevant config settings</returns>
+        public override string ToString()
+            =>  "```\n" +
+                $"Webcam => {CamEnabled}\n" +
+                $"Default Cam => {DefaultCam} ({Constants.Cameras[DefaultCam].Name})\n" +
+                $"Screenshot => {SsEnabled}\n" +
+                $"Play => {PlayEnabled}\n" +
+                $"TTS => {TtsEnabled}\n" +
+                $"Processes => {ProcessesEnabled}\n" +
+                $"Folder => {FolderPath}\n" +
+                $"Clipboard => {ClipboardEnabled}\n" +
+                $"```";
+
+        /// <summary>
         /// Reloads the config by calling the constructor again
         /// </summary>
         public void ReloadConfig()
