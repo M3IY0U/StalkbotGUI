@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using AForge.Video.DirectShow;
 
 namespace StalkbotGUI.Stalkbot.Utilities
 {
@@ -13,5 +14,6 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public static readonly SolidColorBrush LogWarningBrush = new SolidColorBrush(Colors.Yellow);
         public static readonly SolidColorBrush LogErrorBrush = new SolidColorBrush(Colors.Red);
         public static readonly SolidColorBrush DefaultBrush = new SolidColorBrush(Colors.White);
+        public static readonly FilterInfoCollection Cameras = new FilterInfoCollection(FilterCategory.VideoInputDevice);
     }
 }

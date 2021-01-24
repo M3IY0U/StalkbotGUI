@@ -178,7 +178,9 @@
     <Compile Include="ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Stalkbot.Discord\Commands\Webcam.cs" />
     <Compile Include="Stalkbot.Discord\StalkbotClient.cs" />
+    <Compile Include="Stalkbot.Utilities\RequireEnabled.cs" />
     <Compile Include="Stalkbot.Utilities\CommandHelper.cs" />
     <Compile Include="Stalkbot.Utilities\Config.cs" />
     <Compile Include="Stalkbot.Utilities\Constants.cs" />
@@ -235,9 +237,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Stalkbot.Discord\Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>

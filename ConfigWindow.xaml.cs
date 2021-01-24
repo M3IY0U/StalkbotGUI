@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using AForge.Video.DirectShow;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using StalkbotGUI.Stalkbot.Utilities;
 
@@ -28,11 +27,11 @@ namespace StalkbotGUI
             TokenInput.Text = Config.Instance.Token;
             AutoStartCheckBox.IsChecked = Config.Instance.AutoStartDiscord;
             MinimizeCheckBox.IsChecked= Config.Instance.MinimizeToTray;
-            var devices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             var webcams = new List<string>();
-            for (var i = devices.Count - 1; i >= 0; i--)
-                webcams.Add(devices[i].Name);
+            for (var i = 0; i < Constants.Cameras.Count; i++)
+                webcams.Add(Constants.Cameras[i].Name);
             CamSelector.ItemsSource = webcams;
+            CamSelector.SelectedIndex = Config.Instance.DefaultCam;
         }
 
         /// <summary>

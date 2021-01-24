@@ -4,6 +4,8 @@ using System.Media;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Exceptions;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 
 namespace StalkbotGUI.Stalkbot.Utilities
@@ -39,7 +41,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
         /// </summary>
         /// <param name="sender">The discord client that fired the command</param>
         /// <param name="e">Event args</param>
-        /// <returns></returns>
+        /// <returns>The built task</returns>
         public static Task PlayAlert(DiscordClient sender, MessageCreateEventArgs e)
         {
             // check if message was a command
@@ -56,6 +58,34 @@ namespace StalkbotGUI.Stalkbot.Utilities
                 player.Play();
 
             return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Handles a command error
+        /// </summary>
+        /// <param name="sender">CommandsNext extension object</param>
+        /// <param name="e">Event args</param>
+        /// <returns>The built task</returns>
+        public static async Task CommandErrored(CommandsNextExtension sender, CommandErrorEventArgs e)
+        {
+            // "ignore" non-existent commands
+            if (e.Exception.Message.Contains("command was not found"))
+            {
+                await e.Context.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("❓"));
+                return;
+            }
+
+            // check if the command was just disabled
+            if (((ChecksFailedException)e.Exception).FailedChecks.OfType<RequireEnabled>().Any())
+            {
+                Logger.Log($"{e.Context.User.Username} used {e.Command.Name} command in #{e.Context.Channel.Name}, but it was disabled.", LogLevel.Warning);
+                await e.Context.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🔕"));
+                return;
+            }
+
+            // log an actual error
+            await e.Context.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("❌"));
+            Logger.Log($"Exception in command {e.Command.Name}! Message: {e.Exception.Message}", LogLevel.Error);
         }
     }
 }

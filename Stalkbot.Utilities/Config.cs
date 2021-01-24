@@ -75,6 +75,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
             switch (command)
             {
                 case "webcam":
+                case "webcams":
                     return CamEnabled;
                 case "play":
                     return PlayEnabled;

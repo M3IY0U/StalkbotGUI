@@ -20,7 +20,7 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// The actual discord client
         /// </summary>
         private readonly DiscordClient _client;
-        
+
         /// <summary>
         /// Command handler
         /// </summary>
@@ -29,7 +29,7 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// <summary>
         /// Holds the last message if the user wants it deleted
         /// </summary>
-        private DiscordMessage _lastResponse;
+        private static Stack<DiscordMessage> _lastResponses = new Stack<DiscordMessage>();
 
         /// <summary>
         /// Flag keeping track of the bots status
@@ -61,6 +61,7 @@ namespace StalkbotGUI.Stalkbot.Discord
 
             // register commands + hook events
             _commandsNext.RegisterCommands(Assembly.GetEntryAssembly());
+            _commandsNext.CommandErrored += CommandHelper.CommandErrored;
             _client.MessageCreated += CommandHelper.PlayAlert;
         }
 
@@ -68,12 +69,16 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// Deletes the last message the bot sent
         /// </summary>
         /// <returns>The built task</returns>
-        public async Task DeleteLastMessage()
+        public async Task Undo()
         {
-            if (_lastResponse == null)
+            if (_lastResponses.Count == 0)
+            {
+                Logger.Log("Nothing left to delete!", LogLevel.Error);
                 return;
-            await _lastResponse.DeleteAsync();
-            _lastResponse = null;
+            }
+
+            Logger.Log($"Deleted last response in #{_lastResponses.Peek().Channel.Name} ({_lastResponses.Peek().Channel.Guild.Name})", LogLevel.Warning);
+            await _lastResponses.Pop().DeleteAsync();
         }
 
         /// <summary>
@@ -108,6 +113,13 @@ namespace StalkbotGUI.Stalkbot.Discord
                 Logger.Log($"Error logging into Discord: {e.Message}", LogLevel.Error);
             }
         }
+
+        /// <summary>
+        /// Updates the bots last message
+        /// </summary>
+        /// <param name="msg">The new message</param>
+        public static void UpdateLastMessage(DiscordMessage msg)
+            => _lastResponses.Push(msg);
 
         /// <summary>
         /// Disconnects and disposes of members

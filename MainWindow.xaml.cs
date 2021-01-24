@@ -68,6 +68,7 @@ namespace StalkbotGUI
             Config.Instance.CamEnabled = !Config.Instance.CamEnabled;
             Logger.Log($"Webcam: {Config.Instance.CamEnabled}", LogLevel.Info);
             UiHelpers.UpdateButton("webcam", ref WebcamToggle);
+            Config.Instance.SaveConfig();
         }
 
         /// <summary>
@@ -80,6 +81,7 @@ namespace StalkbotGUI
             Config.Instance.SsEnabled = !Config.Instance.SsEnabled;
             Logger.Log($"Screenshot: {Config.Instance.SsEnabled}", LogLevel.Info);
             UiHelpers.UpdateButton("screenshot", ref ScreenshotToggle);
+            Config.Instance.SaveConfig();
         }
 
         /// <summary>
@@ -92,6 +94,7 @@ namespace StalkbotGUI
             Config.Instance.TtsEnabled = !Config.Instance.TtsEnabled;
             Logger.Log($"Text to Speech: {Config.Instance.TtsEnabled}", LogLevel.Info);
             UiHelpers.UpdateButton("tts", ref TtsToggle);
+            Config.Instance.SaveConfig();
         }
 
         /// <summary>
@@ -104,6 +107,7 @@ namespace StalkbotGUI
             Config.Instance.PlayEnabled = !Config.Instance.PlayEnabled;
             Logger.Log($"Playsound: {Config.Instance.PlayEnabled}", LogLevel.Info);
             UiHelpers.UpdateButton("play", ref PlayToggle);
+            Config.Instance.SaveConfig();
         }
 
         /// <summary>
@@ -116,6 +120,7 @@ namespace StalkbotGUI
             Config.Instance.ProcessesEnabled = !Config.Instance.ProcessesEnabled;
             Logger.Log($"Processes: {Config.Instance.ProcessesEnabled}", LogLevel.Info);
             UiHelpers.UpdateButton("proc", ref ProcToggle);
+            Config.Instance.SaveConfig();
         }
 
         /// <summary>
@@ -128,6 +133,7 @@ namespace StalkbotGUI
             Config.Instance.ClipboardEnabled = !Config.Instance.ClipboardEnabled;
             Logger.Log($"Clipboard: {Config.Instance.ClipboardEnabled}", LogLevel.Info);
             UiHelpers.UpdateButton("clipboard", ref ClipboardToggle);
+            Config.Instance.SaveConfig();
         }
 
         /// <summary>
@@ -136,7 +142,7 @@ namespace StalkbotGUI
         /// <param name="sender">Button object</param>
         /// <param name="e">Event args</param>
         private async void UndoButton_Click(object sender, RoutedEventArgs e)
-            => await _client.DeleteLastMessage();
+            => await _client.Undo();
 
         /// <summary>
         /// Handles clicking the config button

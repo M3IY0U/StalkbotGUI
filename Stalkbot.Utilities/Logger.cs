@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace StalkbotGUI.Stalkbot.Utilities
 {
@@ -14,12 +15,12 @@ namespace StalkbotGUI.Stalkbot.Utilities
         /// Contains the actual log texts
         /// </summary>
         private static TextBlock _logText;
-        
+
         /// <summary>
         /// Log "container"
         /// </summary>
         private static ScrollViewer _viewer;
-        
+
         /// <summary>
         /// Logs a message to the window
         /// </summary>
@@ -28,9 +29,10 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public static void Log(string message, LogLevel level)
         {
             if (_logText == null) throw new Exception("Logger not initialized!");
-            
-            _logText.Inlines.Add(new Run($"{message}{Environment.NewLine}") { Foreground = Color(level)});
-            _viewer.ScrollToEnd();
+
+            _logText.Dispatcher.Invoke(() => _logText.Inlines.Add(
+                new Run($"[{DateTime.Now.ToLongTimeString()}] {message}{Environment.NewLine}") { Foreground = Color(level) }));
+            _viewer.Dispatcher.Invoke(() => _viewer.ScrollToEnd());
         }
 
         /// <summary>
