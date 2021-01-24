@@ -53,12 +53,15 @@ namespace StalkbotGUI.Stalkbot.Utilities
             =>  "```\n" +
                 $"Webcam => {CamEnabled}\n" +
                 $"Default Cam => {DefaultCam} ({Constants.Cameras[DefaultCam].Name})\n" +
+                $"Attempted Cam Resolution => {CamWidth} x {CamHeight}\n" +
                 $"Screenshot => {SsEnabled}\n" +
+                $"Screenshot Blur => {BlurAmount}\n" +
                 $"Play => {PlayEnabled}\n" +
                 $"TTS => {TtsEnabled}\n" +
+                $"Play/TTS Timeout => {Timeout}\n" +
                 $"Processes => {ProcessesEnabled}\n" +
-                $"Folder => {FolderPath}\n" +
                 $"Clipboard => {ClipboardEnabled}\n" +
+                $"Folder => {FolderPath}\n" +
                 $"```";
 
         /// <summary>
@@ -100,7 +103,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
                 case "tts":
                     return TtsEnabled;
                 case "folder":
-                    return string.IsNullOrEmpty(FolderPath);
+                    return !string.IsNullOrEmpty(FolderPath);
                 case "proc":
                     return ProcessesEnabled;
                 case "clipboard":

@@ -17,7 +17,7 @@ namespace StalkbotGUI
         public ConfigWindow()
         {
             InitializeComponent();
-            FolderLabel.Content = Config.Instance.FolderPath;
+            FolderLabel.Content = string.IsNullOrEmpty(Config.Instance.FolderPath) ? "No folder selected." : Config.Instance.FolderPath;
             DurationInput.Text = $"{Config.Instance.Timeout}";
             BlurInput.Text = $"{Config.Instance.BlurAmount}";
             WidthInput.Text = $"{Config.Instance.CamWidth}";
@@ -45,8 +45,19 @@ namespace StalkbotGUI
             {
                 if (dialog.ShowDialog() != CommonFileDialogResult.Ok) return;
                 Config.Instance.FolderPath = dialog.FileName;
-                FolderLabel.Content = $"Current Folder:\n{Config.Instance.FolderPath}";
+                FolderLabel.Content = $"{Config.Instance.FolderPath}";
             }
+        }
+
+        /// <summary>
+        /// Handles clicking the folder reset button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
+        private void FolderClear_Click(object sender, RoutedEventArgs e)
+        {
+            Config.Instance.FolderPath = "";
+            FolderLabel.Content = "No folder selected.";
         }
 
         /// <summary>

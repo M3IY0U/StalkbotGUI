@@ -49,7 +49,8 @@ namespace StalkbotGUI.Stalkbot.Discord
 
             // dependency injection (might be overkill but idc)
             var dependencies = new ServiceCollection();
-            dependencies.AddSingleton(CommandHelper.IndexFiles());
+            dependencies.AddSingleton(CommandHelper.IndexFiles())
+                        .AddSingleton(new Random());
 
             // command config
             _commandsNext = _client.UseCommandsNext(new CommandsNextConfiguration

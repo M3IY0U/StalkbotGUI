@@ -179,6 +179,7 @@
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Stalkbot.Discord\Commands\ConfigCommand.cs" />
+    <Compile Include="Stalkbot.Discord\Commands\Folder.cs" />
     <Compile Include="Stalkbot.Discord\Commands\Webcam.cs" />
     <Compile Include="Stalkbot.Discord\StalkbotClient.cs" />
     <Compile Include="Stalkbot.Utilities\RequireEnabled.cs" />

@@ -92,9 +92,11 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Content="Current Folder: " HorizontalAlignment="Center" Name="FolderLabel" HorizontalContentAlignment="Center" />
-                    <Button Grid.Row="1" Content="Pick Folder" Width="75" Name="FolderSelect" Click="FolderSelect_Click"/>
+                    <Button Grid.Row="1" Content="Pick Folder" Width="75" Name="FolderSelect" Click="FolderSelect_Click" Margin="0,5"/>
+                    <Button Grid.Row="2" Content="Reset" Width="40" Name="FolderClear" Click="FolderClear_Click" Margin="0,5"/>
                 </Grid>
             </TabItem>
 
