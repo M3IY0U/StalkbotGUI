@@ -9,7 +9,7 @@ namespace StalkbotGUI
     /// <summary>
     /// Interaction logic for ConfigWindow.xaml
     /// </summary>
-    public partial class ConfigWindow : Window
+    public partial class ConfigWindow
     {
         /// <summary>
         /// Constructor
