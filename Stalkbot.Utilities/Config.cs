@@ -17,6 +17,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public int CamWidth { get; set; } = 1280;
         public int CamHeight { get; set; } = 720;
         public int DefaultCam { get; set; } = 0;
+        public int GifLength { get; set; } = 5000;
         // Screenshot
         public bool SsEnabled { get; set; } = false;
         public double BlurAmount { get; set; } = 1;
@@ -95,6 +96,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
             {
                 case "webcam":
                 case "webcams":
+                case "webcamgif":
                     return CamEnabled;
                 case "play":
                     return PlayEnabled;

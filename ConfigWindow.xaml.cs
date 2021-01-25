@@ -33,6 +33,7 @@ namespace StalkbotGUI
             TokenInput.Text = Config.Instance.Token;
             AutoStartCheckBox.IsChecked = Config.Instance.AutoStartDiscord;
             MinimizeCheckBox.IsChecked = Config.Instance.MinimizeToTray;
+            GifLengthInput.Text = $"{Config.Instance.GifLength}";
             var webcams = new List<string>();
             for (var i = 0; i < Constants.Cameras.Count; i++)
                 webcams.Add(Constants.Cameras[i].Name);
@@ -168,7 +169,7 @@ namespace StalkbotGUI
         /// Handles text changing in the token input
         /// </summary>
         /// <param name="sender">Textbox object</param>
-        /// <param name="e"></param>
+        /// <param name="e">Event args</param>
         private void TokenInput_TextChanged(object sender, TextChangedEventArgs e)
             => Config.Instance.Token = TokenInput.Text;
 
@@ -179,5 +180,16 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void PrefixInput_TextChanged(object sender, TextChangedEventArgs e)
             => Config.Instance.Prefix = PrefixInput.Text;
+
+        /// <summary>
+        /// Handles text changing in the gif length input
+        /// </summary>
+        /// <param name="sender">Textbox object</param>
+        /// <param name="e">Event args</param>
+        private void GifLengthInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(!string.IsNullOrEmpty(GifLengthInput.Text))
+                Config.Instance.GifLength = int.Parse(GifLengthInput.Text);
+        }
     }
 }

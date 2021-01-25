@@ -43,9 +43,13 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Webcam Delay (ms)" HorizontalAlignment="Right"></Label>
                         <TextBox Grid.Column="1" Width="50" HorizontalAlignment="Left" TextAlignment="Center" Padding="5,0,0,0" Name="CamDelayInput" TextChanged="CamDelayInput_TextChanged"/>
+                        <Label Grid.Column="2" Content="Gif length (ms)" HorizontalAlignment="Right"></Label>
+                        <TextBox Grid.Column="3" Width="50" HorizontalAlignment="Left" TextAlignment="Center" Padding="5,0,0,0" Name="GifLengthInput" TextChanged="GifLengthInput_TextChanged"/>
                     </Grid>
                 </Grid>
             </TabItem>
