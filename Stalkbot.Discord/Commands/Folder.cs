@@ -21,7 +21,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// <param name="ctx">Context this command has been executed in</param>
         /// <param name="search">Optional search term for finding specific files</param>
         /// <returns>The built task</returns>
-        [RequireEnabled, Command("folder"), Aliases("f"), Description("Sends a random (or specific file) from a predefined folder.")]
+        [RequireEnabled, Command("folder"), Aliases("f"),
+         Description("Sends a random (or specific file) from a predefined folder.")]
         public async Task SendRandomFile(CommandContext ctx, [Description("Term to search for, leave blank for random file.")] string search = "")
         {
             var file = Files[Rng.Next(Files.Length)];

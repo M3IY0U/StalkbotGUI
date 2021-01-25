@@ -10,9 +10,10 @@ namespace StalkbotGUI.Stalkbot.Utilities.UI
         /// <summary>
         /// Constructor
         /// </summary>
-        public ProgressBar()
+        public ProgressBar(string filename)
         {
             InitializeComponent();
+            Title = $"Downloading {filename}...";
         }
 
         /// <summary>

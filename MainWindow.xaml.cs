@@ -31,12 +31,9 @@ namespace StalkbotGUI
         {
             InitializeComponent();
             Logger.Init(ref LogText, ref LogView);
-            Task.Delay(1000);
-            CheckRequirements();
             _client = new StalkbotClient();
             if (Config.Instance.AutoStartDiscord)
                 new Action(() => OnOffButton_Click(null, null))();
-
             InitButtons();
             _notifyIcon = new NotifyIcon
             {
@@ -44,6 +41,9 @@ namespace StalkbotGUI
                 Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
             };
             _notifyIcon.DoubleClick += NotifyIconOnDoubleClick;
+
+            Task.Delay(1000);
+            CheckRequirements();
         }
 
         #region ButtonHandlers
@@ -183,31 +183,42 @@ namespace StalkbotGUI
                 Config.Instance.SaveConfig();
             }
 
-            if (File.Exists("ffmpeg.exe")) return;
-            Logger.Log("ffmpeg was not found in directory, downloading it...", LogLevel.Warning);
-            if (!await DownloadFfmpeg())
-                Logger.Log("Error downloading ffmpeg, please try starting again or download it manually", LogLevel.Error);
+            if (!File.Exists("ffmpeg.exe"))
+            {
+                Logger.Log("ffmpeg was not found in directory, downloading it...", LogLevel.Warning);
+                if (!await DownloadFile("https://timostestdoma.in/res/ffmpeg.exe", "ffmpeg.exe"))
+                    Logger.Log("Error downloading ffmpeg, please try starting again or download it manually",
+                        LogLevel.Error);
+                else
+                    Logger.Log("Successfully downloaded ffmpeg!", LogLevel.Info);
+            }
+
+            if (File.Exists("youtube-dl.exe")) return;
+            Logger.Log("youtube-dl was not found in directory, downloading it...", LogLevel.Warning);
+            if (!await DownloadFile("https://timostestdoma.in/res/youtube-dl.exe", "youtube-dl.exe"))
+                Logger.Log("Error downloading youtube-dl, please try starting again or download it manually",
+                    LogLevel.Error);
             else
-                Logger.Log("Successfully downloaded ffmpeg!", LogLevel.Info);
+                Logger.Log("Successfully downloaded youtube-dl!", LogLevel.Info);
         }
 
         /// <summary>
         /// Downloads ffmpeg with progress bar
         /// </summary>
         /// <returns>Whether the download was successful</returns>
-        private async Task<bool> DownloadFfmpeg()
+        private async Task<bool> DownloadFile(string url, string filename)
         {
             var error = false;
             await Dispatcher.Invoke(async () =>
             {
-                var pbw = new ProgressBar();
+                var pbw = new ProgressBar(filename);
                 pbw.Show();
 
                 using (var client = new WebClient())
                 {
                     client.DownloadProgressChanged += (sender, args) => pbw.UpdateProgress(args.ProgressPercentage);
                     client.DownloadDataCompleted += (sender, args) => error = args.Cancelled || args.Error != null;
-                    await client.DownloadFileTaskAsync(new Uri("https://timostestdoma.in/res/ffmpeg.exe"), "ffmpeg.exe");
+                    await client.DownloadFileTaskAsync(new Uri(url), filename);
                 }
             });
             return !error;

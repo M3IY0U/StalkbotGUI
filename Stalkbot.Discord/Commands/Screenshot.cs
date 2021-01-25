@@ -21,7 +21,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// <param name="ctx">Context this command has been executed in</param>
         /// <returns>The built task</returns>
         [RequireEnabled, Command("screenshot"), Aliases("ss"), 
-         Cooldown(1, 5, CooldownBucketType.Global), Description("Captures a screenshot.")]
+         Cooldown(1, 5, CooldownBucketType.Global),
+         Description("Captures a screenshot.")]
         public async Task CaptureScreen(CommandContext ctx)
         {
             var vScreen = SystemInformation.VirtualScreen;
