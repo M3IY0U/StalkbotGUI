@@ -18,7 +18,7 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// <summary>
         /// The actual discord client
         /// </summary>
-        private DiscordClient _client;
+        private readonly DiscordClient _client;
 
         /// <summary>
         /// Command handler
@@ -58,13 +58,7 @@ namespace StalkbotGUI.Stalkbot.Discord
             _commandsNext.CommandErrored += CommandHelper.CommandErrored;
             _client.MessageCreated += CommandHelper.PlayAlert;
         }
-
-        /// <summary>
-        /// Refreshes the discord client
-        /// </summary>
-        public void ReloadDiscordClient()
-            => _client = new DiscordClient(new DiscordConfiguration {Token = Config.Instance.Token});
-
+        
         /// <summary>
         /// Deletes the last message the bot sent
         /// </summary>
@@ -127,8 +121,11 @@ namespace StalkbotGUI.Stalkbot.Discord
         public async void Dispose()
         {
             await _client.DisconnectAsync();
+            Logger.Log("Disconnected from Discord", LogLevel.Warning);
             _client.Dispose();
+            Logger.Log("Disposed Discord client", LogLevel.Warning);
             _commandsNext = null;
+            IsRunning = false;
         }
     }
 }

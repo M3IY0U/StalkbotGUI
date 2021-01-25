@@ -21,7 +21,7 @@ namespace StalkbotGUI
         /// <summary>
         /// Client responsible for everything related to "stalking"
         /// </summary>
-        private readonly StalkbotClient _client;
+        private StalkbotClient _client;
         private readonly NotifyIcon _notifyIcon;
 
         /// <summary>
@@ -151,9 +151,17 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
+            var oldToken = Config.Instance.Token;
             var cfg = new ConfigWindow();
             cfg.Show();
-            cfg.Closed += (o, args) => _client.ReloadDiscordClient();
+            cfg.Closed += (o, args) =>
+            {
+                if (oldToken == Config.Instance.Token) return;
+                _client = new StalkbotClient();
+                OnOffButton.Background = new SolidColorBrush(_client.IsRunning ? Colors.DarkGreen : Colors.DarkRed);
+                OnOffButton.Content = _client.IsRunning ? "On" : "Off";
+            };
+
         }
 
         #endregion
@@ -256,9 +264,7 @@ namespace StalkbotGUI
         /// <param name="sender">Window object</param>
         /// <param name="e">Event args</param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            _client.Dispose();
-        }
+            => _client.Dispose();
 
         #endregion
     }
