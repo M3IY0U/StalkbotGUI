@@ -73,7 +73,7 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Combobox object</param>
         /// <param name="e">Event args</param>
-        private void CamSelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void CamSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Config.Instance.DefaultCam = CamSelector.SelectedIndex;
             _selectedDevice = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
@@ -114,7 +114,7 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Textbox object</param>
         /// <param name="e">Event args</param>
-        private void CamDelayInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void CamDelayInput_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!string.IsNullOrEmpty(CamDelayInput.Text))
                 Config.Instance.CamTimer = Convert.ToInt32(CamDelayInput.Text);
@@ -125,7 +125,7 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Textbox object</param>
         /// <param name="e">Event args</param>
-        private void BlurInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void BlurInput_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!string.IsNullOrEmpty(BlurInput.Text))
                 Config.Instance.BlurAmount = Convert.ToDouble(BlurInput.Text);
@@ -136,7 +136,7 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Textbox object</param>
         /// <param name="e">Event args</param>
-        private void DurationInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void DurationInput_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!string.IsNullOrEmpty(DurationInput.Text))
                 Config.Instance.Timeout = Convert.ToDouble(DurationInput.Text);
@@ -169,7 +169,7 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Textbox object</param>
         /// <param name="e"></param>
-        private void TokenInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void TokenInput_TextChanged(object sender, TextChangedEventArgs e)
             => Config.Instance.Token = TokenInput.Text;
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Textbox input</param>
         /// <param name="e">Event args</param>
-        private void PrefixInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void PrefixInput_TextChanged(object sender, TextChangedEventArgs e)
             => Config.Instance.Prefix = PrefixInput.Text;
     }
 }

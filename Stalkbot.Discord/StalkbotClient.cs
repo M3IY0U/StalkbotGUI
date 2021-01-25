@@ -18,7 +18,7 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// <summary>
         /// The actual discord client
         /// </summary>
-        private readonly DiscordClient _client;
+        private DiscordClient _client;
 
         /// <summary>
         /// Command handler
@@ -45,7 +45,7 @@ namespace StalkbotGUI.Stalkbot.Discord
             {
                 Token = Config.Instance.Token
             });
-
+            
             // command config
             _commandsNext = _client.UseCommandsNext(new CommandsNextConfiguration
             {
@@ -58,6 +58,12 @@ namespace StalkbotGUI.Stalkbot.Discord
             _commandsNext.CommandErrored += CommandHelper.CommandErrored;
             _client.MessageCreated += CommandHelper.PlayAlert;
         }
+
+        /// <summary>
+        /// Refreshes the discord client
+        /// </summary>
+        public void ReloadDiscordClient()
+            => _client = new DiscordClient(new DiscordConfiguration {Token = Config.Instance.Token});
 
         /// <summary>
         /// Deletes the last message the bot sent

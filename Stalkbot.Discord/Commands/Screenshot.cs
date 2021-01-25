@@ -25,6 +25,9 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
          Description("Captures a screenshot.")]
         public async Task ScreenshotTask(CommandContext ctx)
         {
+            Logger.Log($"Screenshot requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
+                LogLevel.Info);
+
             var vScreen = SystemInformation.VirtualScreen;
             using (var bm = new Bitmap(vScreen.Width,vScreen.Height))
             {
@@ -43,9 +46,6 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                     await img.SaveAsync(Filename);
                 }
             }
-
-            Logger.Log($"Screenshot requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
-                LogLevel.Info);
 
             StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync(Filename));
             File.Delete(Filename);

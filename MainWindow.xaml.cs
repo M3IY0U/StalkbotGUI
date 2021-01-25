@@ -153,6 +153,7 @@ namespace StalkbotGUI
         {
             var cfg = new ConfigWindow();
             cfg.Show();
+            cfg.Closed += (o, args) => _client.ReloadDiscordClient();
         }
 
         #endregion
