@@ -14,7 +14,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// <returns>The built task</returns>
         [Command("config"), Aliases("cfg"),
         Description("Prints out all relevant stalk information to Discord.")]
-        public async Task PrintConfig(CommandContext ctx)
+        public async Task ConfigTask(CommandContext ctx)
             => await ctx.RespondAsync(Config.Instance.ToString());
     }
 }

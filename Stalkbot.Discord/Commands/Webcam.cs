@@ -19,7 +19,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// <returns>The built task</returns>
         [RequireEnabled, Command("webcam"), Aliases("wc", "cam"), Cooldown(1, 5, CooldownBucketType.User),
          Description("Captures a photo from the webcam.")]
-        public async Task CamCommand(CommandContext ctx,
+        public async Task WebcamTask(CommandContext ctx,
             [Description("Index of the cam you want to capture.\nUse the webcam command to list them.")] int camIndex = -1)
         {
             // if no camera index has been passed, use the one from the config

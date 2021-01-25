@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using Microsoft.Extensions.DependencyInjection;
 using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI.Stalkbot.Discord
@@ -47,17 +46,11 @@ namespace StalkbotGUI.Stalkbot.Discord
                 Token = Config.Instance.Token
             });
 
-            // dependency injection (might be overkill but idc)
-            var dependencies = new ServiceCollection();
-            dependencies.AddSingleton(CommandHelper.IndexFiles())
-                        .AddSingleton(new Random());
-
             // command config
             _commandsNext = _client.UseCommandsNext(new CommandsNextConfiguration
             {
                 EnableDms = false,
-                StringPrefixes = new List<string> { Config.Instance.Prefix },
-                Services = dependencies.BuildServiceProvider()
+                StringPrefixes = new List<string> { Config.Instance.Prefix }
             });
 
             // register commands + hook events

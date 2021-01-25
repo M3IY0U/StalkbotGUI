@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using StalkbotGUI.Stalkbot.Utilities;
@@ -20,7 +17,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// <returns>The built task</returns>
         [RequireEnabled, Command("processes"), Aliases("proc"),
         Description("Returns the top 15 ram heavy processes in a table.")]
-        public async Task GetProcesses(CommandContext ctx)
+        public async Task ProcessesTask(CommandContext ctx)
         {
             Logger.Log($"Processes requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
                 LogLevel.Info);

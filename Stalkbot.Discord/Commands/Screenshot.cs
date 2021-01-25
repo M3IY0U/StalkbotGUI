@@ -23,7 +23,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         [RequireEnabled, Command("screenshot"), Aliases("ss"), 
          Cooldown(1, 5, CooldownBucketType.Global),
          Description("Captures a screenshot.")]
-        public async Task CaptureScreen(CommandContext ctx)
+        public async Task ScreenshotTask(CommandContext ctx)
         {
             var vScreen = SystemInformation.VirtualScreen;
             using (var bm = new Bitmap(vScreen.Width,vScreen.Height))

@@ -9,12 +9,6 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
     public class Folder : BaseCommandModule
     {
-        public string[] Files { get; }
-        public Random Rng;
-
-        public Folder(string[] files, Random rng)
-            => (Files, Rng) = (files, rng);
-
         /// <summary>
         /// Responds with a random file from the users set folder
         /// </summary>
@@ -23,12 +17,15 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// <returns>The built task</returns>
         [RequireEnabled, Command("folder"), Aliases("f"),
          Description("Sends a random (or specific file) from a predefined folder.")]
-        public async Task SendRandomFile(CommandContext ctx, [Description("Term to search for, leave blank for random file.")] string search = "")
+        public async Task FolderTask(CommandContext ctx, [Description("Term to search for, leave blank for random file.")] string search = "")
         {
-            var file = Files[Rng.Next(Files.Length)];
+            var rng = new Random();
+            var files = CommandHelper.IndexFiles();
+
+            var file = files[rng.Next(files.Length)];
             if (!string.IsNullOrEmpty(search))
             {
-                foreach (var ef in Files)
+                foreach (var ef in files)
                 {
                     if (!ef.ToLower().Contains(search.ToLower())) continue;
                     file = ef;
