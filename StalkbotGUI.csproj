@@ -185,9 +185,11 @@
     </Compile>
     <Compile Include="Stalkbot.Discord\Commands\ConfigCommand.cs" />
     <Compile Include="Stalkbot.Discord\Commands\Folder.cs" />
+    <Compile Include="Stalkbot.Discord\Commands\Processes.cs" />
     <Compile Include="Stalkbot.Discord\Commands\Screenshot.cs" />
     <Compile Include="Stalkbot.Discord\Commands\Webcam.cs" />
     <Compile Include="Stalkbot.Discord\StalkbotClient.cs" />
+    <Compile Include="Stalkbot.Utilities\ConsoleTables.cs" />
     <Compile Include="Stalkbot.Utilities\RequireEnabled.cs" />
     <Compile Include="Stalkbot.Utilities\CommandHelper.cs" />
     <Compile Include="Stalkbot.Utilities\Config.cs" />

@@ -29,7 +29,7 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// <summary>
         /// Holds the last message if the user wants it deleted
         /// </summary>
-        private static Stack<DiscordMessage> _lastResponses = new Stack<DiscordMessage>();
+        private static readonly Stack<DiscordMessage> LastResponses = new Stack<DiscordMessage>();
 
         /// <summary>
         /// Flag keeping track of the bots status
@@ -72,14 +72,14 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// <returns>The built task</returns>
         public async Task Undo()
         {
-            if (_lastResponses.Count == 0)
+            if (LastResponses.Count == 0)
             {
                 Logger.Log("Nothing left to delete!", LogLevel.Error);
                 return;
             }
 
-            Logger.Log($"Deleted last response in #{_lastResponses.Peek().Channel.Name} ({_lastResponses.Peek().Channel.Guild.Name})", LogLevel.Warning);
-            await _lastResponses.Pop().DeleteAsync();
+            Logger.Log($"Deleted last response in #{LastResponses.Peek().Channel.Name} ({LastResponses.Peek().Channel.Guild.Name})", LogLevel.Warning);
+            await LastResponses.Pop().DeleteAsync();
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// </summary>
         /// <param name="msg">The new message</param>
         public static void UpdateLastMessage(DiscordMessage msg)
-            => _lastResponses.Push(msg);
+            => LastResponses.Push(msg);
 
         /// <summary>
         /// Disconnects and disposes of members

@@ -76,11 +76,20 @@ namespace StalkbotGUI.Stalkbot.Utilities
             }
 
             // check if the command was just disabled
-            if (((ChecksFailedException)e.Exception).FailedChecks.OfType<RequireEnabled>().Any())
+            try
             {
-                Logger.Log($"{e.Context.User.Username} used {e.Command.Name} command in #{e.Context.Channel.Name}, but it was disabled.", LogLevel.Warning);
-                await e.Context.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🔕"));
-                return;
+                if (((ChecksFailedException)e.Exception).FailedChecks.OfType<RequireEnabled>().Any())
+                {
+                    Logger.Log(
+                        $"{e.Context.User.Username} used {e.Command.Name} command in #{e.Context.Channel.Name}, but it was disabled.",
+                        LogLevel.Warning);
+                    await e.Context.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🔕"));
+                    return;
+                }
+            }
+            catch
+            {
+                // ignored
             }
 
             // log an actual error

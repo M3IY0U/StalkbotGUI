@@ -105,6 +105,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
                 case "folder":
                     return !string.IsNullOrEmpty(FolderPath);
                 case "proc":
+                case "processes":
                     return ProcessesEnabled;
                 case "clipboard":
                     return ClipboardEnabled;
