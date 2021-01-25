@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using AForge.Video.DirectShow;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using StalkbotGUI.Stalkbot.Utilities;
 
@@ -12,6 +15,11 @@ namespace StalkbotGUI
     public partial class ConfigWindow
     {
         /// <summary>
+        /// Keeps track of the currently selected webcam
+        /// </summary>
+        private VideoCaptureDevice _selectedDevice;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public ConfigWindow()
@@ -20,18 +28,18 @@ namespace StalkbotGUI
             FolderLabel.Content = string.IsNullOrEmpty(Config.Instance.FolderPath) ? "No folder selected." : Config.Instance.FolderPath;
             DurationInput.Text = $"{Config.Instance.Timeout}";
             BlurInput.Text = $"{Config.Instance.BlurAmount}";
-            WidthInput.Text = $"{Config.Instance.CamWidth}";
-            HeightInput.Text = $"{Config.Instance.CamHeight}";
             CamDelayInput.Text = $"{Config.Instance.CamTimer}";
             PrefixInput.Text = Config.Instance.Prefix;
             TokenInput.Text = Config.Instance.Token;
             AutoStartCheckBox.IsChecked = Config.Instance.AutoStartDiscord;
-            MinimizeCheckBox.IsChecked= Config.Instance.MinimizeToTray;
+            MinimizeCheckBox.IsChecked = Config.Instance.MinimizeToTray;
             var webcams = new List<string>();
             for (var i = 0; i < Constants.Cameras.Count; i++)
                 webcams.Add(Constants.Cameras[i].Name);
             CamSelector.ItemsSource = webcams;
             CamSelector.SelectedIndex = Config.Instance.DefaultCam;
+            _selectedDevice = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
+            UpdateResolutionSelector();
         }
 
         /// <summary>
@@ -41,7 +49,7 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void FolderSelect_Click(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new CommonOpenFileDialog("Folder Resources") {IsFolderPicker = true})
+            using (var dialog = new CommonOpenFileDialog("Folder Resources") { IsFolderPicker = true })
             {
                 if (dialog.ShowDialog() != CommonFileDialogResult.Ok) return;
                 Config.Instance.FolderPath = dialog.FileName;
@@ -66,9 +74,30 @@ namespace StalkbotGUI
         /// <param name="sender">Combobox object</param>
         /// <param name="e">Event args</param>
         private void CamSelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-            => Config.Instance.DefaultCam = CamSelector.SelectedIndex;
+        {
+            Config.Instance.DefaultCam = CamSelector.SelectedIndex;
+            _selectedDevice = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
+            UpdateResolutionSelector();
+        }
 
-        
+        /// <summary>
+        /// Updates contents of the resolution selector
+        /// </summary>
+        private void UpdateResolutionSelector()
+            => ResolutionSelector.ItemsSource =
+                _selectedDevice.VideoCapabilities.Select(x => $"{x.FrameSize.Width}x{x.FrameSize.Height}");
+
+        /// <summary>
+        /// Handles changing the resolution selection
+        /// </summary>
+        /// <param name="sender">Combobox object</param>
+        /// <param name="e">Event args</param>
+        private void ResolutionSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Config.Instance.CamWidth = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').First());
+            Config.Instance.CamHeight = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').Last());
+        }
+
         /// <summary>
         /// Handles the window being closed via the X button
         /// </summary>
@@ -92,28 +121,6 @@ namespace StalkbotGUI
         }
 
         /// <summary>
-        /// Handles text changing in the height input
-        /// </summary>
-        /// <param name="sender">Textbox object</param>
-        /// <param name="e">Event args</param>
-        private void HeightInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(HeightInput.Text))
-                Config.Instance.CamHeight = Convert.ToInt32(HeightInput.Text);
-        }
-
-        /// <summary>
-        /// Handles text changing in the width input
-        /// </summary>
-        /// <param name="sender">Textbox object</param>
-        /// <param name="e">Event args</param>
-        private void WidthInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(WidthInput.Text))
-                Config.Instance.CamWidth = Convert.ToInt32(WidthInput.Text);
-        }
-
-        /// <summary>
         /// Handles text changing in the blur input
         /// </summary>
         /// <param name="sender">Textbox object</param>
@@ -131,7 +138,7 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void DurationInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            if(!string.IsNullOrEmpty(DurationInput.Text))
+            if (!string.IsNullOrEmpty(DurationInput.Text))
                 Config.Instance.Timeout = Convert.ToDouble(DurationInput.Text);
         }
 
@@ -142,7 +149,7 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void MinimizeCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            if(MinimizeCheckBox.IsChecked.HasValue)
+            if (MinimizeCheckBox.IsChecked.HasValue)
                 Config.Instance.MinimizeToTray = MinimizeCheckBox.IsChecked.Value;
         }
 
@@ -162,7 +169,7 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Textbox object</param>
         /// <param name="e"></param>
-        private void TokenInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) 
+        private void TokenInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
             => Config.Instance.Token = TokenInput.Text;
 
         /// <summary>
@@ -170,7 +177,7 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Textbox input</param>
         /// <param name="e">Event args</param>
-        private void PrefixInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) 
+        private void PrefixInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
             => Config.Instance.Prefix = PrefixInput.Text;
     }
 }

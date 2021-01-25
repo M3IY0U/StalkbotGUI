@@ -20,7 +20,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -31,24 +30,16 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.5*"/>
                             <ColumnDefinition/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Content="Camera" HorizontalAlignment="Right"/>
                         <ComboBox Grid.Column="1" HorizontalAlignment="Left" MinWidth="95" Margin="5,0,0,0" Name="CamSelector" SelectionChanged="CamSelector_SelectionChanged"/>
+                        <Label Grid.Column="2" Content="Resolution" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Column="3" HorizontalAlignment="Right" MinWidth="95" Margin="5,0,0,0" Name="ResolutionSelector" SelectionChanged="ResolutionSelector_SelectionChanged"/>
                     </Grid>
 
                     <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Width"/>
-                        <TextBox Grid.Column="1" TextAlignment="Center" Name="WidthInput" TextChanged="WidthInput_TextChanged"/>
-                        <Label Grid.Column="2" Content="Height" />
-                        <TextBox Grid.Column="3" TextAlignment="Center" Name="HeightInput" TextChanged="HeightInput_TextChanged"/>
-                    </Grid>
-                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
