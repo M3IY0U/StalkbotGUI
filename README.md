@@ -7,7 +7,7 @@
 + Alerts for every command, just name it appropriately and it should play
 + Undo functionality for relevant commands
 ## Commands
-For the sake of convenience <sub><sup>smh</sup></sub>, assume your prefix would be `p! [camIndex]`.\
+For the sake of convenience <sub><sup>smh</sup></sub>, assume your prefix would be `p!`.\
 Arguments in `<>` are required, those in `[]` are optional.
 + Webcam => This command is split into 3 "modes"
     + Just taking a picture: After a set delay a picture will be captured and uploaded. `p!webcam [camIndex]`
@@ -25,3 +25,29 @@ Arguments in `<>` are required, those in `[]` are optional.
     + Either posts what you have currently in your clipboard, or sets it to whatever the command was called with. `p!clipboard [content]`
 + Folder
     + Sends a random (or specific) file from the configured folder (if it's below discord 8mb size limit). `p!folder [search]`
+
+## Stuff you can (and can't) configure
+### CONFIGURABLE
++ Which webcam will be used
++ The webcams resolution
++ The delay after the webcam starts recording
++ The length of the webcam gif
++ The amount of blur on a screenshot
++ The maximum duration for Play/TTS
++ The source for the folder command
++ The bot token and prefix (might require restart)
+\
+### NOT CONFIGURABLE (yet):
++ Different resolutions for gif/normal webcam
++ Different timeouts for tts and play
++ Probably some more stuff that i don't remember right now
+
+## Remarks
++ Everything the bot needs should be downloaded/created on first startup
++ Config gets saved on closing the window, there is no save button
++ While the GUI should theoretically be able to do everything, you can still adjust settings via the generated `config.json` file like in the previous version of the bot, you just might need to restart it.
++ The play command uses youtube-dl for downloading, so everything that can be downloaded with that _should_ work
++ The webcam gif command is more experimental than it should be. Some possible issues:
+    + Having a less powerful webcam/computer might result in less frames being saved => Faster gif with missing frames
+    + Memory usage might rise significantly when using this command, but should settle down after a while
+    + Gifs might be too large for Discord, aka above 8mb in size (although they should be scaled to avoid that) 

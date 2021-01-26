@@ -49,7 +49,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             thread.Start();
             thread.Join();
             if (!string.IsNullOrEmpty(text))
-                await ctx.RespondAsync(text);
+                StalkbotClient.UpdateLastMessage(await ctx.RespondAsync(text));
         }
     }
 }
