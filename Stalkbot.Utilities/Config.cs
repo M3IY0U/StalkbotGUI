@@ -51,18 +51,18 @@ namespace StalkbotGUI.Stalkbot.Utilities
         /// </summary>
         /// <returns>A string of relevant config settings</returns>
         public override string ToString()
-            =>  "```\n" +
-                $"Webcam => {CamEnabled}\n" +
-                $"Default Cam => {DefaultCam} ({Constants.Cameras[DefaultCam].Name})\n" +
-                $"Attempted Cam Resolution => {CamWidth} x {CamHeight}\n" +
-                $"Screenshot => {SsEnabled}\n" +
-                $"Screenshot Blur => {BlurAmount}\n" +
-                $"Play => {PlayEnabled}\n" +
-                $"TTS => {TtsEnabled}\n" +
-                $"Play/TTS Timeout => {Timeout}\n" +
-                $"Processes => {ProcessesEnabled}\n" +
-                $"Clipboard => {ClipboardEnabled}\n" +
-                $"Folder => {FolderPath}\n" +
+            =>  "```prolog\n" +
+                $"Webcam            => {CamEnabled}\n" +
+                $"Default Cam       => {DefaultCam} ({Constants.Cameras[DefaultCam].Name})\n" +
+                $"Webcam Gif Length => {GifLength / 1000} second(s)\n" +
+                $"Screenshot        => {SsEnabled}\n" +
+                $"Screenshot Blur   => {BlurAmount}\n" +
+                $"Play              => {PlayEnabled}\n" +
+                $"TTS               => {TtsEnabled}\n" +
+                $"Play/TTS Timeout  => {Timeout / 1000} second(s)\n" +
+                $"Processes         => {ProcessesEnabled}\n" +
+                $"Clipboard         => {ClipboardEnabled}\n" +
+                $"Folder            => {FolderPath}\n" +
                 $"```";
 
         /// <summary>

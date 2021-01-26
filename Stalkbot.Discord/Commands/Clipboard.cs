@@ -13,14 +13,16 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// <summary>
         /// Command for getting/setting clipboard text
         /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name="content"></param>
-        /// <returns></returns>
+        /// <param name="ctx">Context this command is executed in</param>
+        /// <param name="content">The Content to set the clipboard to</param>
+        /// <returns>The built task</returns>
         [RequireEnabled, Command("clipboard"), Aliases("cp"), Cooldown(1, 10, CooldownBucketType.Global),
         Description("Get or set the user's clipboard.")]
         public async Task ClipboardTask(CommandContext ctx,
             [Description("The content to set. Leave empty to return users clipboard")][RemainingText] string content = "")
         {
+            Logger.Log($"Clipboard requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
+                LogLevel.Info);
             var text = "";
             var thread = string.IsNullOrEmpty(content)
                 ? new Thread(() =>
