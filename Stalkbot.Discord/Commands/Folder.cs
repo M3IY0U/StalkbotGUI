@@ -10,7 +10,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
     public class Folder : BaseCommandModule
     {
         /// <summary>
-        /// Responds with a random file from the users set folder
+        /// Command for responding with a random file from the users set folder
         /// </summary>
         /// <param name="ctx">Context this command has been executed in</param>
         /// <param name="search">Optional search term for finding specific files</param>
