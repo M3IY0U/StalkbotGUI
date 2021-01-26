@@ -93,8 +93,9 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             capture.Stop();
             
             await CreateGif();
-            await ctx.RespondWithFileAsync("result.gif");
+            StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync("result.gif"));
             Directory.Delete("gif", true);
+            timer.Dispose();
         }
 
         /// <summary>
