@@ -66,7 +66,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
                 $"Processes         => {ProcessesEnabled}\n" +
                 $"Clipboard         => {ClipboardEnabled}\n" +
                 $"Folder            => {FolderPath}\n" +
-                $"```";
+                "```";
 
         /// <summary>
         /// Reloads the config by calling the constructor again

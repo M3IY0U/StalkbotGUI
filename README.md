@@ -1,4 +1,6 @@
 # StalkbotGUI
+[![forthebadge](https://forthebadge.com/images/badges/thats-how-they-get-you.svg)](https://forthebadge.com) \
+[![CodeFactor](https://www.codefactor.io/repository/github/m3iy0u/stalkbotgui/badge)](https://www.codefactor.io/repository/github/m3iy0u/stalkbotgui)
 
 ## Features
 + GUI that let's you toggle most commands on and off
