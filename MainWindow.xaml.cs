@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Newtonsoft.Json;
 using StalkbotGUI.Stalkbot.Discord;
 using StalkbotGUI.Stalkbot.Utilities;
 using StalkbotGUI.Stalkbot.Utilities.UI;
@@ -21,8 +24,9 @@ namespace StalkbotGUI
         /// <summary>
         /// Client responsible for everything related to "stalking"
         /// </summary>
-        private StalkbotClient _client;
+        private readonly StalkbotClient _client;
         private readonly NotifyIcon _notifyIcon;
+        private const string Version = "1.1";
 
         /// <summary>
         /// Constructor
@@ -44,6 +48,7 @@ namespace StalkbotGUI
 
             Task.Delay(1000);
             CheckRequirements();
+            CheckForNewRelease();
         }
 
         #region ButtonHandlers
@@ -158,6 +163,36 @@ namespace StalkbotGUI
         #endregion
 
         #region Utilities
+
+        /// <summary>
+        /// Calls the GitHub API to check for new releases
+        /// </summary>
+        private async void CheckForNewRelease()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
+                using (var response = await client.GetAsync("https://api.github.com/repos/M3IY0U/StalkbotGUI/releases"))
+                {
+                    response.EnsureSuccessStatusCode();
+                    var json = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
+                    if (json[0].tag_name == Version) return;
+                    _notifyIcon.Visible = true;
+                    _notifyIcon.BalloonTipClicked += OpenReleasePage;
+                    _notifyIcon.ShowBalloonTip(3000, "New version available",
+                                                           $"Your version: {Version}\n" +
+                                                                 $"Latest: {json[0].tag_name}", ToolTipIcon.Info);
+                    _notifyIcon.Visible = false;
+                }
+            }
+        }
+
+        private void OpenReleasePage(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/M3IY0U/StalkbotGUI/releases");
+            _notifyIcon.BalloonTipClicked -= OpenReleasePage;
+        }
+
         /// <summary>
         /// Colors the UI toggle buttons
         /// </summary>
