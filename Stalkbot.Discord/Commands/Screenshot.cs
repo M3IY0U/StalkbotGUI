@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using StalkbotGUI.Stalkbot.Utilities;
@@ -29,6 +30,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 LogLevel.Info);
 
             var vScreen = SystemInformation.VirtualScreen;
+            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("📸"));
             using (var bm = new Bitmap(vScreen.Width,vScreen.Height))
             {
                 using (var g = Graphics.FromImage(bm))

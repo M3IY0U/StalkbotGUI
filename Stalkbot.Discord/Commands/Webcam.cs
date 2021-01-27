@@ -63,7 +63,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// </summary>
         /// <param name="ctx">Context this command has been executed in</param>
         /// <returns>The built task</returns>
-        [RequireEnabled, Command("webcamgif"), Aliases("gif", "wcg", "wcgif"), Cooldown(1, 15, CooldownBucketType.User),
+        [RequireEnabled, Command("webcamgif"), Aliases("gif", "wcg", "wcgif"), Cooldown(1, 10, CooldownBucketType.Global),
          Description("Creates a gif from the webcam.")]
         public async Task GifTask(CommandContext ctx)
         {
@@ -97,6 +97,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
 
             await CreateGif();
             StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync("result.gif"));
+            await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("📤"));
             Directory.Delete("gif", true);
             timer.Dispose();
         }
@@ -105,7 +106,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// Creates a gif from an image sequence
         /// </summary>
         /// <returns>The built task</returns>
-        private Task CreateGif()
+        private static Task CreateGif()
         {
             var fps = Config.Instance.GifFps
                 ? $"fps={Directory.GetFiles("gif").Length / (Config.Instance.GifLength / 1000)},"

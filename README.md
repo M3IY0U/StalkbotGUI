@@ -11,7 +11,7 @@ For the sake of convenience <sub><sup>smh</sup></sub>, assume your prefix would 
 Arguments in `<>` are required, those in `[]` are optional.
 + Webcam => This command is split into 3 "modes"
     + Just taking a picture: After a set delay a picture will be captured and uploaded. `p!webcam [camIndex]`
-    + Recording a gif: After a set delay a gif will be recorded (length can be set in config). `p!webcamgif [camIndex]`
+    + Recording a gif: After a set delay a gif will be recorded (length can be set in config). `p!webcamgif`
     + Listing webcams: Lists the available webcams and their indices. `p!webcams`
 + Screenshot
     + Takes a screenshot of all monitors and optionally blurs it. `p!screenshot`
@@ -32,13 +32,14 @@ Arguments in `<>` are required, those in `[]` are optional.
 + The webcams resolution
 + The delay after the webcam starts recording
 + The length of the webcam gif
++ The original resolution of the gif
++ Whether the gif has a constant framerate
 + The amount of blur on a screenshot
 + The maximum duration for Play/TTS
 + The source for the folder command
 + The bot token and prefix (might require restart)
 \
 ### NOT CONFIGURABLE (yet):
-+ Different resolutions for gif/normal webcam
 + Different timeouts for tts and play
 + Probably some more stuff that i don't remember right now
 
@@ -48,6 +49,18 @@ Arguments in `<>` are required, those in `[]` are optional.
 + While the GUI should theoretically be able to do everything, you can still adjust settings via the generated `config.json` file like in the previous version of the bot, you just might need to restart it.
 + The play command uses youtube-dl for downloading, so everything that can be downloaded with that _should_ work
 + The webcam gif command is more experimental than it should be. Some possible issues:
-    + Having a less powerful webcam/computer might result in less frames being saved => Faster gif with missing frames
     + Memory usage might rise significantly when using this command, but should settle down after a while
     + Gifs might be too large for Discord, aka above 8mb in size (although they should be scaled to avoid that) 
+
+## Installation
+1. Download the latest release from the [Releases](https://github.com/M3IY0U/StalkbotGUI/releases) tab
+2. Extract the folder somewhere and start the executable
+3. Configure your token and prefix in the settings (don't forget to close the config window to save them)
+4. Restart the app
+5. ???
+6. Profit
+
+## Alternatives
+For when you are not using the windows 
++ [Stalkbot-Rewrite](https://gitlab.com/Jerrynicki/stalkbot-rewrite)
++ [Watchdog](https://github.com/TheLastZombie/Watchdog)
