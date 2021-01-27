@@ -169,22 +169,26 @@ namespace StalkbotGUI
         /// </summary>
         private async void CheckForNewRelease()
         {
-            using (var client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
-                using (var response = await client.GetAsync("https://api.github.com/repos/M3IY0U/StalkbotGUI/releases"))
+                using (var client = new HttpClient())
                 {
-                    response.EnsureSuccessStatusCode();
-                    var json = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
-                    if (json[0].tag_name == Version) return;
-                    _notifyIcon.Visible = true;
-                    _notifyIcon.BalloonTipClicked += OpenReleasePage;
-                    _notifyIcon.ShowBalloonTip(3000, "New version available",
-                                                           $"Your version: {Version}\n" +
-                                                                 $"Latest: {json[0].tag_name}", ToolTipIcon.Info);
-                    _notifyIcon.Visible = false;
+                    client.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
+                    using (var response = await client.GetAsync("https://api.github.com/repos/M3IY0U/StalkbotGUI/releases"))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        var json = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
+                        if (json[0].tag_name == Version) return;
+                        _notifyIcon.Visible = true;
+                        _notifyIcon.BalloonTipClicked += OpenReleasePage;
+                        _notifyIcon.ShowBalloonTip(3000, "New version available",
+                            $"Your version: {Version}\n" +
+                            $"Latest: {json[0].tag_name}", ToolTipIcon.Info);
+                        _notifyIcon.Visible = false;
+                    }
                 }
             }
+            catch { Logger.Log("Couldn't check for new releases", LogLevel.Warning); }
         }
 
         private void OpenReleasePage(object sender, EventArgs e)
