@@ -35,7 +35,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             // init capture
             var capture =
                 new VideoCaptureDevice(Constants.Cameras[camIndex].MonikerString);
-            capture.VideoResolution = TrySelectRes(capture);
+            capture.VideoResolution = TrySelectRes(capture, false);
 
             capture.Start();
 
@@ -62,23 +62,23 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// Command for capturing a gif from the webcam
         /// </summary>
         /// <param name="ctx">Context this command has been executed in</param>
-        /// <param name="camIndex">Index of the camera, uses config value if -1</param>
         /// <returns>The built task</returns>
         [RequireEnabled, Command("webcamgif"), Aliases("gif", "wcg", "wcgif"), Cooldown(1, 15, CooldownBucketType.User),
          Description("Creates a gif from the webcam.")]
-        public async Task GifTask(CommandContext ctx, [Description("Index of the cam you want to capture.\nUse the webcam command to list them.")] int camIndex = -1)
+        public async Task GifTask(CommandContext ctx)
         {
-            if (camIndex == -1)
-                camIndex = Config.Instance.DefaultCam;
             Directory.CreateDirectory("gif");
+            Logger.Log($"Webcam Gif requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
+                LogLevel.Info);
 
             var capture =
-                new VideoCaptureDevice(Constants.Cameras[camIndex].MonikerString);
-            capture.VideoResolution = TrySelectRes(capture);
+                new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
+            capture.VideoResolution = TrySelectRes(capture, true);
             capture.Start();
             await Task.Delay(Config.Instance.CamTimer);
 
-            var timer = new Timer(Config.Instance.GifLength) {Enabled = true, AutoReset = false};
+            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🎥"));
+            var timer = new Timer(Config.Instance.GifLength) { Enabled = true, AutoReset = false };
             timer.Elapsed += (sender, args) => capture.SignalToStop();
 
             var counter = 0;
@@ -91,7 +91,10 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             while (capture.IsRunning)
                 capture.WaitForStop();
             capture.Stop();
-            
+
+            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("📤"));
+            await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("🎥"));
+
             await CreateGif();
             StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync("result.gif"));
             Directory.Delete("gif", true);
@@ -104,10 +107,14 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// <returns>The built task</returns>
         private Task CreateGif()
         {
+            var fps = Config.Instance.GifFps
+                ? $"fps={Directory.GetFiles("gif").Length / (Config.Instance.GifLength / 1000)},"
+                : "";
+
             using (var exeProcess = Process.Start(new ProcessStartInfo
             {
                 FileName = "ffmpeg.exe",
-                Arguments = $"-y -i gif{Path.DirectorySeparatorChar}%d.png -vf scale=400:-1 result.gif",
+                Arguments = $"-y -i gif{Path.DirectorySeparatorChar}%d.png -vf \"{fps}scale=400:-1\" result.gif",
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true
@@ -122,12 +129,21 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// Tries to set the resolution to the config values, otherwise returns highest option
         /// </summary>
         /// <param name="device">The device to check</param>
+        /// <param name="isGif">Whether gif res or normal res should be used</param>
         /// <returns>The desired capabilities/resolution</returns>
-        private static VideoCapabilities TrySelectRes(VideoCaptureDevice device)
+        private static VideoCapabilities TrySelectRes(VideoCaptureDevice device, bool isGif)
         {
+            var width = isGif
+                ? Config.Instance.GifCamWidth
+                : Config.Instance.CamWidth;
+
+            var height = isGif
+                ? Config.Instance.GifCamHeight
+                : Config.Instance.CamHeight;
+
             foreach (var cap in device.VideoCapabilities)
             {
-                if (cap.FrameSize.Width == Config.Instance.CamWidth && cap.FrameSize.Height == Config.Instance.CamHeight)
+                if (cap.FrameSize.Width == width && cap.FrameSize.Height == height)
                     return cap;
             }
             return device.VideoCapabilities.Last();

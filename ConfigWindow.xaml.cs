@@ -40,7 +40,9 @@ namespace StalkbotGUI
             CamSelector.ItemsSource = webcams;
             CamSelector.SelectedIndex = Config.Instance.DefaultCam;
             _selectedDevice = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
+            GifFps.IsChecked = Config.Instance.GifFps;
             UpdateResolutionSelector();
+            UpdateGifResolutionSelector();
         }
 
         /// <summary>
@@ -79,6 +81,7 @@ namespace StalkbotGUI
             Config.Instance.DefaultCam = CamSelector.SelectedIndex;
             _selectedDevice = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
             UpdateResolutionSelector();
+            UpdateGifResolutionSelector();
         }
 
         /// <summary>
@@ -86,6 +89,13 @@ namespace StalkbotGUI
         /// </summary>
         private void UpdateResolutionSelector()
             => ResolutionSelector.ItemsSource =
+                _selectedDevice.VideoCapabilities.Select(x => $"{x.FrameSize.Width}x{x.FrameSize.Height}");
+
+        /// <summary>
+        /// Updates contents of the gif resolution selector
+        /// </summary>
+        private void UpdateGifResolutionSelector()
+            => GifResolutionSelector.ItemsSource =
                 _selectedDevice.VideoCapabilities.Select(x => $"{x.FrameSize.Width}x{x.FrameSize.Height}");
 
         /// <summary>
@@ -188,8 +198,30 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void GifLengthInput_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(!string.IsNullOrEmpty(GifLengthInput.Text))
+            if (!string.IsNullOrEmpty(GifLengthInput.Text))
                 Config.Instance.GifLength = int.Parse(GifLengthInput.Text);
+        }
+
+        /// <summary>
+        /// Handles checkbox changes for gif fps
+        /// </summary>
+        /// <param name="sender">Checkbox object</param>
+        /// <param name="e">Event args</param>
+        private void GifFps_Click(object sender, RoutedEventArgs e)
+        {
+            if (GifFps.IsChecked.HasValue)
+                Config.Instance.GifFps = GifFps.IsChecked.Value;
+        }
+
+        /// <summary>
+        /// Handles changing the gif resolution selection
+        /// </summary>
+        /// <param name="sender">Combobox object</param>
+        /// <param name="e">Event args</param>
+        private void GifResolutionSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Config.Instance.GifCamWidth = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').First());
+            Config.Instance.GifCamHeight = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').Last());
         }
     }
 }

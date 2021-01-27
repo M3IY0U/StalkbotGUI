@@ -83,7 +83,7 @@ namespace StalkbotGUI.Stalkbot.Discord
         {
             try
             {
-                if (_client.Ping == 0) //TODO: I'm not sure if ping is all that reliable but for now it works
+                if (!IsRunning)
                 {
                     Logger.Log("Connecting to Discord...", LogLevel.Info);
                     await _client.ConnectAsync();

@@ -151,17 +151,8 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            var oldToken = Config.Instance.Token;
             var cfg = new ConfigWindow();
             cfg.Show();
-            cfg.Closed += (o, args) =>
-            {
-                if (oldToken == Config.Instance.Token) return;
-                _client = new StalkbotClient();
-                OnOffButton.Background = new SolidColorBrush(_client.IsRunning ? Colors.DarkGreen : Colors.DarkRed);
-                OnOffButton.Content = _client.IsRunning ? "On" : "Off";
-            };
-
         }
 
         #endregion

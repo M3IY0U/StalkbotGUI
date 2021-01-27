@@ -41,7 +41,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             // file is being processed
             await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("♨"));
 
-            if (!await DownloadAsWav(url))
+            if (!await Download(url))
                 throw new Exception("Error downloading audio");
             await ConvertAudio("temp.wav");
             
@@ -71,7 +71,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// Plays audio file while respecting timeout set in config
         /// </summary>
         /// <returns>The built task</returns>
-        private async Task<bool> PlayAudio()
+        private static async Task<bool> PlayAudio()
         {
             // flag if timeout was hit
             var abort = false;
@@ -120,7 +120,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// </summary>
         /// <param name="url">The url to download from</param>
         /// <returns>A boolean indicating whether the download was successful</returns>
-        private async Task<bool> DownloadAsWav(string url)
+        private static async Task<bool> Download(string url)
         {
             var ytdl = new YoutubeDL()
             {
@@ -140,7 +140,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// </summary>
         /// <param name="filename">The filename to convert</param>
         /// <returns>The built task</returns>
-        private Task ConvertAudio(string filename)
+        private static Task ConvertAudio(string filename)
         {
             using (var exeProcess = Process.Start(new ProcessStartInfo
             {

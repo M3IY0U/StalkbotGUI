@@ -17,7 +17,10 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public int CamWidth { get; set; } = 1280;
         public int CamHeight { get; set; } = 720;
         public int DefaultCam { get; set; } = 0;
+        public int GifCamWidth { get; set; } = 1280;
+        public int GifCamHeight { get; set; } = 720;
         public int GifLength { get; set; } = 5000;
+        public bool GifFps { get; set; } = false;
         // Screenshot
         public bool SsEnabled { get; set; } = false;
         public double BlurAmount { get; set; } = 1;

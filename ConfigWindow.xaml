@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StalkbotGUI"
         mc:Ignorable="d"
         Title="ConfigWindow" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Closed="Window_Closed">
     <Grid>
@@ -18,6 +17,7 @@
                 </TabItem.Header>
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -50,6 +50,18 @@
                         <TextBox Grid.Column="1" Width="50" HorizontalAlignment="Left" TextAlignment="Center" Padding="5,0,0,0" Name="CamDelayInput" TextChanged="CamDelayInput_TextChanged"/>
                         <Label Grid.Column="2" Content="Gif length (ms)" HorizontalAlignment="Right"></Label>
                         <TextBox Grid.Column="3" Width="50" HorizontalAlignment="Left" TextAlignment="Center" Padding="5,0,0,0" Name="GifLengthInput" TextChanged="GifLengthInput_TextChanged"/>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Constant Gif FPS" HorizontalAlignment="Left"></Label>
+                        <CheckBox x:Name="GifFps" Grid.Column="1" HorizontalAlignment="Left" Margin="0,5,0,0" Click="GifFps_Click"/>
+                        <Label Grid.Column="2" Content="Gif Resolution" HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Column="3" HorizontalAlignment="Right" MinWidth="95" Margin="5,0,0,0" Name="GifResolutionSelector" SelectionChanged="GifResolutionSelector_SelectionChanged"/>
                     </Grid>
                 </Grid>
             </TabItem>
