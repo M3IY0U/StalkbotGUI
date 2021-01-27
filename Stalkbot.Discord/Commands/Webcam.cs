@@ -12,7 +12,7 @@ using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
-    public class Webcam : BaseCommandModule
+    public class Webcam : AlertCommand
     {
         /// <summary>
         /// Command for capturing a photo from the webcam

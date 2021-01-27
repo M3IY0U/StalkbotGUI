@@ -5,7 +5,7 @@ using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
-    public class ConfigCommand : BaseCommandModule
+    public class ConfigCommand : AlertCommand
     {
         /// <summary>
         /// Displays relevant config items to discord users

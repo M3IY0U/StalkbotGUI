@@ -7,7 +7,7 @@ using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
-    public class Folder : BaseCommandModule
+    public class Folder : AlertCommand
     {
         /// <summary>
         /// Command for responding with a random file from the users set folder

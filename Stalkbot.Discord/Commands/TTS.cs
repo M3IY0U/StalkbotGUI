@@ -6,10 +6,9 @@ using DSharpPlus.Entities;
 using StalkbotGUI.Stalkbot.Utilities;
 using Timer = System.Timers.Timer;
 
-
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
-    public class Tts : BaseCommandModule
+    public class Tts : AlertCommand
     {
         /// <summary>
         /// Command used for playing tts audio for the user

@@ -15,7 +15,7 @@ using Timer = System.Timers.Timer;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
-    public class Play : BaseCommandModule
+    public class Play : AlertCommand
     {
         /// <summary>
         /// Plays a file or url for the user

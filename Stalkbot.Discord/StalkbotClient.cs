@@ -56,7 +56,6 @@ namespace StalkbotGUI.Stalkbot.Discord
             // register commands + hook events
             _commandsNext.RegisterCommands(Assembly.GetEntryAssembly());
             _commandsNext.CommandErrored += CommandHelper.CommandErrored;
-            _client.MessageCreated += CommandHelper.PlayAlert;
         }
         
         /// <summary>

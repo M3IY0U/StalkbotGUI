@@ -8,7 +8,7 @@ using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
-    public class Clipboard : BaseCommandModule
+    public class Clipboard : AlertCommand
     {
         /// <summary>
         /// Command for getting/setting clipboard text

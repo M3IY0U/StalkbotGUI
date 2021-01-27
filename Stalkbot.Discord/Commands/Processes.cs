@@ -8,7 +8,7 @@ using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
-    public class Processes : BaseCommandModule
+    public class Processes : AlertCommand
     {
         /// <summary>
         /// Command for listing top 15 most ram intensive processes

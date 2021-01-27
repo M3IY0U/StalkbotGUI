@@ -12,7 +12,7 @@ using Image = SixLabors.ImageSharp.Image;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
-    public class Screenshot : BaseCommandModule
+    public class Screenshot : AlertCommand
     {
         private const string Filename = "screenshot.png";
 

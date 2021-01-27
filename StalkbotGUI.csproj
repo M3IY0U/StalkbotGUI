@@ -226,6 +226,7 @@
     <Compile Include="Stalkbot.Discord\Commands\Tts.cs" />
     <Compile Include="Stalkbot.Discord\Commands\Webcam.cs" />
     <Compile Include="Stalkbot.Discord\StalkbotClient.cs" />
+    <Compile Include="Stalkbot.Utilities\AlertCommand.cs" />
     <Compile Include="Stalkbot.Utilities\ConsoleTables.cs" />
     <Compile Include="Stalkbot.Utilities\RequireEnabled.cs" />
     <Compile Include="Stalkbot.Utilities\CommandHelper.cs" />
