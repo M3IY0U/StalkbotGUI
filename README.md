@@ -8,6 +8,18 @@
 + Minimizing to system tray so that you may be stalked without having that pesky icon in your taskbar
 + Alerts for every command, just name it appropriately and it should play
 + Undo functionality for relevant commands
+
+## Installation
+1. Create an Application in the [Discord Developer Portal](https://discord.com/developers/applications/) and add a Bot to it
+2. Download the latest release from the [Releases](https://github.com/M3IY0U/StalkbotGUI/releases) tab
+3. Extract the folder somewhere and start the executable
+4. Obtain your token from the Bot tab in the Developer Portal
+4. Configure your token and prefix in the settings (don't forget to close the config window to save them)
+5. Restart the app
+6. Invite your bot to a server by clicking on OAuth2 -> Check `bot` -> Copy Link into Webbrowser of choice
+7. Profit
+
+
 ## Commands
 For the sake of convenience <sub><sup>smh</sup></sub>, assume your prefix would be `p!`.\
 Arguments in `<>` are required, those in `[]` are optional.
@@ -53,14 +65,6 @@ Arguments in `<>` are required, those in `[]` are optional.
 + The webcam gif command is more experimental than it should be. Some possible issues:
     + Memory usage might rise significantly when using this command, but should settle down after a while
     + Gifs might be too large for Discord, aka above 8mb in size (although they should be scaled to avoid that) 
-
-## Installation
-1. Download the latest release from the [Releases](https://github.com/M3IY0U/StalkbotGUI/releases) tab
-2. Extract the folder somewhere and start the executable
-3. Configure your token and prefix in the settings (don't forget to close the config window to save them)
-4. Restart the app
-5. ???
-6. Profit
 
 ## Alternatives
 For when you are not using the windows 
