@@ -41,8 +41,8 @@ namespace StalkbotGUI
             CamSelector.SelectedIndex = Config.Instance.DefaultCam;
             _selectedDevice = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
             GifFps.IsChecked = Config.Instance.GifFps;
-            UpdateResolutionSelector();
-            UpdateGifResolutionSelector();
+            UpdateResBox(true);
+            UpdateResBox(false);
         }
 
         /// <summary>
@@ -80,24 +80,30 @@ namespace StalkbotGUI
         {
             Config.Instance.DefaultCam = CamSelector.SelectedIndex;
             _selectedDevice = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
-            UpdateResolutionSelector();
-            UpdateGifResolutionSelector();
+            UpdateResBox(true);
+            UpdateResBox(false);
         }
 
         /// <summary>
-        /// Updates contents of the resolution selector
+        /// Updates the content of the corresponding resolution combobox
         /// </summary>
-        private void UpdateResolutionSelector()
-            => ResolutionSelector.ItemsSource =
-                _selectedDevice.VideoCapabilities.Select(x => $"{x.FrameSize.Width}x{x.FrameSize.Height}");
-
-        /// <summary>
-        /// Updates contents of the gif resolution selector
-        /// </summary>
-        private void UpdateGifResolutionSelector()
-            => GifResolutionSelector.ItemsSource =
-                _selectedDevice.VideoCapabilities.Select(x => $"{x.FrameSize.Width}x{x.FrameSize.Height}");
-
+        /// <param name="isGif">Whether the gif or normal resolution should be updated</param>
+        private void UpdateResBox(bool isGif)
+        {
+            var cb = isGif ? GifResolutionSelector : ResolutionSelector;
+            var items =
+                _selectedDevice.VideoCapabilities.Select(x => $"{x.FrameSize.Width}x{x.FrameSize.Height}").ToList();
+            cb.ItemsSource = items;
+            cb.SelectedIndex =
+                items.FindIndex(s
+                    => s.Contains(isGif 
+                           ? Config.Instance.GifCamWidth.ToString() 
+                           : Config.Instance.CamWidth.ToString())
+                    && s.Contains(isGif 
+                           ? Config.Instance.GifCamHeight.ToString() 
+                           : Config.Instance.CamHeight.ToString()));
+        }
+        
         /// <summary>
         /// Handles changing the resolution selection
         /// </summary>
