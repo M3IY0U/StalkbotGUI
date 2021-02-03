@@ -18,7 +18,7 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// <summary>
         /// The actual discord client
         /// </summary>
-        private readonly DiscordClient _client;
+        private DiscordClient _client;
 
         /// <summary>
         /// Command handler
@@ -84,20 +84,29 @@ namespace StalkbotGUI.Stalkbot.Discord
             {
                 if (!IsRunning)
                 {
+                    IsRunning = true;
                     Logger.Log("Connecting to Discord...", LogLevel.Info);
-                    await _client.ConnectAsync();
-                    await Task.Delay(2000);
+                        await _client.ConnectAsync();
+                    await Task.Delay(1000);
                     await _client.UpdateStatusAsync(new DiscordActivity(
                         $"{_client.CurrentApplication.Owners.First().Username}",
                         ActivityType.Watching));
                     Logger.Log($"Successfully connected to Discord on {_client.Guilds.Count} Servers:\n\t{string.Join("\n\t", _client.Guilds.Values)}", LogLevel.Info);
-                    IsRunning = true;
                 }
                 else
                 {
-                    Logger.Log("Disconnecting from Discord...", LogLevel.Info);
-                    await _client.DisconnectAsync();
                     IsRunning = false;
+                    Logger.Log("Disconnecting from Discord...", LogLevel.Info);
+                    await Dispose();
+                    _client = new DiscordClient(new DiscordConfiguration
+                    {
+                        Token = Config.Instance.Token
+                    });
+                    _commandsNext = _client.UseCommandsNext(new CommandsNextConfiguration
+                    {
+                        EnableDms = false,
+                        StringPrefixes = new List<string> { Config.Instance.Prefix }
+                    });
                     Logger.Log("Successfully disconnected", LogLevel.Info);
                 }
             }
@@ -117,12 +126,10 @@ namespace StalkbotGUI.Stalkbot.Discord
         /// <summary>
         /// Disconnects and disposes of members
         /// </summary>
-        public async void Dispose()
+        public async Task Dispose()
         {
             await _client.DisconnectAsync();
-            Logger.Log("Disconnected from Discord", LogLevel.Warning);
             _client.Dispose();
-            Logger.Log("Disposed Discord client", LogLevel.Warning);
             _commandsNext = null;
             IsRunning = false;
         }

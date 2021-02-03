@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -293,8 +293,8 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Window object</param>
         /// <param name="e">Event args</param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-            => _client.Dispose();
+        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+            => await _client.Dispose();
 
         #endregion
     }
