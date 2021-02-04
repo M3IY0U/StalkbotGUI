@@ -145,7 +145,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             using (var exeProcess = Process.Start(new ProcessStartInfo
             {
                 FileName = "ffmpeg.exe",
-                Arguments = $"-t {Config.Instance.Timeout / 1000} -y -i {filename} -af volume=-25dB, loudnorm=tp=0 -ar 44100 -ac 2 final.wav",
+                Arguments = $"-y -t {Config.Instance.Timeout / 1000} -i {filename} -af volume=-25dB,loudnorm=tp=0 -ar 44100 -ac 2 final.wav",
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true
