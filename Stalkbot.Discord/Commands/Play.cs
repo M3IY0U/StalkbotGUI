@@ -53,12 +53,10 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                     throw new Exception("Invalid amount of arguments passed!");
             }
             
-            
             Logger.Log($"Play requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
                 LogLevel.Info);
             // file is being processed
             await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("♨"));
-
 
             if (!await Download(url))
                 throw new Exception("Error downloading audio");
