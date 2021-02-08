@@ -21,21 +21,38 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// Plays a file or url for the user
         /// </summary>
         /// <param name="ctx">Context this command has been executed in</param>
-        /// <param name="url">The url the user wants played</param>
+        /// <param name="args">Params for playing audio: url and timestamp on where to start separated by space</param>
         /// <returns>The built task</returns>
         [RequireEnabled, Command("play"), Cooldown(1, 5, CooldownBucketType.Global),
-        Description("Play a file or url. Can be attachment, file url or youtube link.")]
-        public async Task PlayTask(CommandContext ctx, string url = "")
+         Description("Play a file or url. Can be attachment, file url or youtube link.")]
+        public async Task PlayTask(CommandContext ctx, [Description("URL and/or timestamp in seconds")] params string[] args)
         {
-            if (string.IsNullOrEmpty(url) && !ctx.Message.Attachments.Any())
+            if (args.Length == 0 && !ctx.Message.Attachments.Any())
             {
                 Logger.Log($"{ctx.User.Username} used play without providing a source", LogLevel.Warning);
                 return;
             }
-            
-            if (string.IsNullOrEmpty(url) && ctx.Message.Attachments.Any())
-                url = ctx.Message.Attachments.First().Url;
 
+            var time = 0;
+            var url = "";
+            switch (args.Length)
+            {
+                case 0:
+                    if (ctx.Message.Attachments.Any())
+                        url = ctx.Message.Attachments.First().Url;
+                    break;
+                case 1:
+                    if (!int.TryParse(args[0], out time))
+                        url = args[0];
+                    break;
+                case 2:
+                    url = args[0];
+                    int.TryParse(args[1], out time);
+                    break;
+                default:
+                    throw new Exception("Invalid amount of arguments passed!");
+            }
+            
             Logger.Log($"Play requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
                 LogLevel.Info);
             // file is being processed
@@ -43,8 +60,9 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
 
             if (!await Download(url))
                 throw new Exception("Error downloading audio");
-            await ConvertAudio("temp.wav");
-            
+            await ConvertAudio("temp.wav",
+                (time == 0) ? "" : $"-ss {time} ");
+
             //done processing
             await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("♨"));
 
@@ -54,17 +72,14 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🛑"));
             else // went smoothly
                 await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("✅"));
-            
+
             try
             {
                 await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("▶"));
-                File.Delete("temp.wav"); 
+                File.Delete("temp.wav");
                 File.Delete("final.wav");
             }
-            catch
-            {
-                // ignored
-            }
+            catch { /*ignored */ }
         }
 
         /// <summary>
@@ -114,7 +129,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             }
             return await Task.FromResult(!abort);
         }
-        
+
         /// <summary>
         /// Downloads a file from anywhere youtube-dl supports and converts it to wav
         /// </summary>
@@ -139,13 +154,14 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// Normalizes audio volume using ffmpeg to combat loud files
         /// </summary>
         /// <param name="filename">The filename to convert</param>
+        /// <param name="time">The timestamp from which so start</param>
         /// <returns>The built task</returns>
-        private static Task ConvertAudio(string filename)
+        private static Task ConvertAudio(string filename, string time)
         {
             using (var exeProcess = Process.Start(new ProcessStartInfo
             {
                 FileName = "ffmpeg.exe",
-                Arguments = $"-y -t {Config.Instance.Timeout / 1000} -i {filename} -af volume=-25dB,loudnorm=tp=0 -ar 44100 -ac 2 final.wav",
+                Arguments = $"-y {time}-t {Config.Instance.Timeout / 1000} -i {filename} -af volume=-25dB,loudnorm=tp=0 -ar 44100 -ac 2 final.wav",
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true
