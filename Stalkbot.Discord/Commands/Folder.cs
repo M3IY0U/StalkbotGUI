@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
@@ -17,7 +18,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// <returns>The built task</returns>
         [RequireEnabled, Command("folder"), Aliases("f"),
          Description("Sends a random (or specific file) from a predefined folder.")]
-        public async Task FolderTask(CommandContext ctx, [Description("Term to search for, leave blank for random file.")] string search = "")
+        public async Task FolderTask(CommandContext ctx, [Description("Term to search for, leave blank for random file.")][RemainingText] string search = "")
         {
             var rng = new Random();
             var files = CommandHelper.IndexFiles();
@@ -25,18 +26,21 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             var file = files[rng.Next(files.Length)];
             if (!string.IsNullOrEmpty(search))
             {
-                foreach (var ef in files)
-                {
-                    if (!ef.ToLower().Contains(search.ToLower())) continue;
-                    file = ef;
-                    break;
-                }
+                files = files.Where(x => x.ToLower().Contains(search.ToLower())).ToArray();
+                file = files[rng.Next(files.Length)];
             }
 
             var fileName = file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+
+            if (new FileInfo(file).Length > 8_388_608)
+            {
+                await ctx.RespondAsync($"File `{fileName}` was over 8MB");
+                throw new Exception($"File '{fileName}' was over Discord's size limit");
+            }
+
             Logger.Log($"Folder requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})" +
                        $"\n\t=> Sending file \"{fileName}\"",
-                LogLevel.Info);
+            LogLevel.Info);
 
             StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync(file, fileName));
         }

@@ -26,7 +26,7 @@ namespace StalkbotGUI
         /// </summary>
         private readonly StalkbotClient _client;
         private readonly NotifyIcon _notifyIcon;
-        private const string Version = "1.1";
+        private const string Version = "1.2";
 
         /// <summary>
         /// Constructor

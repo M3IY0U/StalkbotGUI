@@ -30,7 +30,7 @@ Arguments in `<>` are required, those in `[]` are optional.
 + Screenshot
     + Takes a screenshot of all monitors and optionally blurs it. `p!screenshot`
 + Play
-    + Takes files, urls, or youtube links and plays it for the user. `p!play [url or file]`
+    + Takes files, urls, or youtube links and plays it for the user. `p!play [url or file] [start time in sec]`
 + TTS
     + Uses the Windows built-in TTS Engine to tell the user something. `p!tts <text>`
 + Processes
