@@ -42,8 +42,9 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                         url = ctx.Message.Attachments.First().Url;
                     break;
                 case 1:
-                    if (!int.TryParse(args[0], out time))
-                        url = args[0];
+                    url = !int.TryParse(args[0], out time) 
+                        ? args[0] 
+                        : ctx.Message.Attachments.FirstOrDefault()?.Url ?? throw new Exception("No Attachment to download");
                     break;
                 case 2:
                     url = args[0];
