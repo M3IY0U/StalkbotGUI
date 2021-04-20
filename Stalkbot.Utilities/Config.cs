@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using NAudio.Wave;
 using Newtonsoft.Json;
 
 namespace StalkbotGUI.Stalkbot.Utilities
@@ -21,6 +22,9 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public int GifCamHeight { get; set; } = 720;
         public int GifLength { get; set; } = 5000;
         public bool GifFps { get; set; } = false;
+        // Microphone
+        public bool RecordingEnabled { get; set; } = false;
+        public int MicIndex { get; set; } = 0;
         // Screenshot
         public bool SsEnabled { get; set; } = false;
         public double BlurAmount { get; set; } = 1;
@@ -31,7 +35,6 @@ namespace StalkbotGUI.Stalkbot.Utilities
         // Misc
         public bool ProcessesEnabled { get; set; } = false;
         public string FolderPath { get; set; } = "";
-        public bool ClipboardEnabled { get; set; } = false;
         public bool AutoStartDiscord { get; set; } = false;
         public bool MinimizeToTray { get; set; } = false;
 
@@ -54,18 +57,19 @@ namespace StalkbotGUI.Stalkbot.Utilities
         /// </summary>
         /// <returns>A string of relevant config settings</returns>
         public override string ToString()
-            =>  "```prolog\n" +
-                $"Webcam            => {CamEnabled}\n" +
-                $"Default Cam       => {DefaultCam} ({Constants.Cameras[DefaultCam].Name})\n" +
-                $"Webcam Gif Length => {GifLength / 1000} second(s)\n" +
-                $"Screenshot        => {SsEnabled}\n" +
-                $"Screenshot Blur   => {BlurAmount}\n" +
-                $"Play              => {PlayEnabled}\n" +
-                $"TTS               => {TtsEnabled}\n" +
-                $"Play/TTS Timeout  => {Timeout / 1000} second(s)\n" +
-                $"Processes         => {ProcessesEnabled}\n" +
-                $"Clipboard         => {ClipboardEnabled}\n" +
-                $"Folder            => {FolderPath}\n" +
+            =>  "```ahk\n" +
+                $"Webcam:            {(CamEnabled ? "✅" : "❌")}\n" +
+                $"Default Cam:       {DefaultCam} ({Constants.Cameras[DefaultCam].Name})\n" +
+                $"Webcam Gif Length: {GifLength / 1000} second(s)\n" +
+                $"Recording:         {(RecordingEnabled ? "✅" : "❌")}\n" +
+                $"Recording Mic:     {WaveIn.GetCapabilities(MicIndex).ProductName}\n" +
+                $"Screenshot:        {(SsEnabled ? "✅" : "❌")}\n" +
+                $"Screenshot Blur:   {BlurAmount}\n" +
+                $"Play:              {(PlayEnabled ? "✅" : "❌")}\n" +
+                $"TTS:               {(TtsEnabled ? "✅" : "❌")}\n" +
+                $"Play/TTS Timeout:  {Timeout / 1000} second(s)\n" +
+                $"Processes:         {(ProcessesEnabled ? "✅" : "❌")}\n" +
+                $"Folder:            {FolderPath}\n" +
                 "```";
 
         /// <summary>
@@ -101,6 +105,10 @@ namespace StalkbotGUI.Stalkbot.Utilities
                 case "webcams":
                 case "webcamgif":
                     return CamEnabled;
+                case "microphone":
+                case "mic":
+                case "recording":
+                    return RecordingEnabled;
                 case "play":
                     return PlayEnabled;
                 case "screenshot":
@@ -112,8 +120,6 @@ namespace StalkbotGUI.Stalkbot.Utilities
                 case "proc":
                 case "processes":
                     return ProcessesEnabled;
-                case "clipboard":
-                    return ClipboardEnabled;
                 default:
                     return false;
             }

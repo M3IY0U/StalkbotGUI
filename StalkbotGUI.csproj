@@ -227,9 +227,9 @@
     <Compile Include="ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Stalkbot.Discord\Commands\Clipboard.cs" />
     <Compile Include="Stalkbot.Discord\Commands\ConfigCommand.cs" />
     <Compile Include="Stalkbot.Discord\Commands\Folder.cs" />
+    <Compile Include="Stalkbot.Discord\Commands\Microphone.cs" />
     <Compile Include="Stalkbot.Discord\Commands\Play.cs" />
     <Compile Include="Stalkbot.Discord\Commands\Processes.cs" />
     <Compile Include="Stalkbot.Discord\Commands\Screenshot.cs" />
