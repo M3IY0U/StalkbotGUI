@@ -132,13 +132,13 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         private static Task CreateGif()
         {
             var fps = Config.Instance.GifFps
-                ? $"fps={Directory.GetFiles("gif").Length / (Config.Instance.GifLength / 1000)},"
+                ? $"-r {Directory.GetFiles("gif").Length / (Config.Instance.GifLength / 1000)}"
                 : "";
-
+            
             using (var exeProcess = Process.Start(new ProcessStartInfo
             {
                 FileName = "ffmpeg.exe",
-                Arguments = $"-y -i gif{Path.DirectorySeparatorChar}%d.png -vf \"{fps}scale=400:-1\" result.gif",
+                Arguments = $"-y {fps} -i gif{Path.DirectorySeparatorChar}%d.png -vf \"scale=400:-1\" result.gif",
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true

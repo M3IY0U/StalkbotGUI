@@ -76,5 +76,30 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
 
             return Task.CompletedTask;
         }
+
+        internal static async Task TestScreenshotAsync()
+        {
+            var vScreen = SystemInformation.VirtualScreen;
+            using (var bm = new Bitmap(vScreen.Width, vScreen.Height))
+            {
+                using (var g = Graphics.FromImage(bm))
+                {
+                    g.CopyFromScreen(vScreen.Left, vScreen.Top, 0, 0, bm.Size);
+                }
+                bm.Save(_testFilename);
+            }
+
+            if (Config.Instance.BlurAmount > 0)
+            {
+                using (var img = await Image.LoadAsync(_testFilename))
+                {
+                    img.Mutate(x => x.GaussianBlur((float)Config.Instance.BlurAmount));
+                    await img.SaveAsync(_testFilename);
+                }
+            }
+            Process.Start(_testFilename);
+            await Task.Delay(500);
+            File.Delete(_testFilename);
+        }
     }
 }
