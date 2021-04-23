@@ -239,7 +239,7 @@ namespace StalkbotGUI
                 Config.Instance.GifCamWidth = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').First());
                 Config.Instance.GifCamHeight = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').Last());
             }
-            catch (Exception) { }
+            catch (Exception) { /* ignored */ }
         }
 
         private async void TestScreenshotButton_Click(object sender, RoutedEventArgs e)
