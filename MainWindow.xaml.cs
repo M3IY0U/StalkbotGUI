@@ -188,7 +188,7 @@ namespace StalkbotGUI
                         _notifyIcon.Visible = true;
                         _notifyIcon.BalloonTipClicked += OpenReleasePage;
                         _notifyIcon.ShowBalloonTip(3000, "New version available",
-                            $"Your version: {_version}\n" +
+                            $"Your version: {Version}\n" +
                             $"Latest: {latestRelease}", ToolTipIcon.Info);
                         _notifyIcon.Visible = false;
                     }
