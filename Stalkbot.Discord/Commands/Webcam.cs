@@ -119,6 +119,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync("result.gif"));
             await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("📤"));
             Directory.Delete("gif", true);
+            File.Delete("result.gif");
             timer.Dispose();
         }
 
