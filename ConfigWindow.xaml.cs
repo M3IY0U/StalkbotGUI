@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using AForge.Video.DirectShow;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using StalkbotGUI.Stalkbot.Discord.Commands;
 using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI
@@ -245,5 +246,8 @@ namespace StalkbotGUI
             }
             catch (Exception) { }
         }
+
+        private async void TestScrShtBtn_Click(object sender, RoutedEventArgs e)
+            => await Screenshot.TestScreenshotAsync();
     }
 }
