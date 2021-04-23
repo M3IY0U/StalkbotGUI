@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -23,7 +24,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         [RequireEnabled, Command("webcam"), Aliases("wc", "cam"), Cooldown(1, 5, CooldownBucketType.User),
          Description("Captures a photo from the webcam.")]
         public async Task WebcamTask(CommandContext ctx,
-            [Description("Index of the cam you want to capture.\nUse the webcam command to list them.")] int camIndex = -1)
+            [Description("Index of the cam you want to capture.\nUse the webcam command to list them.")]
+            int camIndex = -1)
         {
             // if no camera index has been passed, use the one from the config
             if (camIndex == -1)
@@ -35,7 +37,16 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             // init capture
             var capture =
                 new VideoCaptureDevice(Constants.Cameras[camIndex].MonikerString);
-            capture.VideoResolution = TrySelectRes(capture, false);
+
+            try
+            {
+                capture.VideoResolution = TrySelectRes(capture, false);
+            }
+            catch (Exception ex)
+            {
+                if (ex.HResult != -2146233079)
+                    throw;
+            }
 
             capture.Start();
 
@@ -63,7 +74,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// </summary>
         /// <param name="ctx">Context this command has been executed in</param>
         /// <returns>The built task</returns>
-        [RequireEnabled, Command("webcamgif"), Aliases("gif", "wcg", "wcgif"), Cooldown(1, 10, CooldownBucketType.Global),
+        [RequireEnabled, Command("webcamgif"), Aliases("gif", "wcg", "wcgif"),
+         Cooldown(1, 10, CooldownBucketType.Global),
          Description("Creates a gif from the webcam.")]
         public async Task GifTask(CommandContext ctx)
         {
@@ -73,7 +85,17 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
 
             var capture =
                 new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
-            capture.VideoResolution = TrySelectRes(capture, true);
+
+            try
+            {
+                capture.VideoResolution = TrySelectRes(capture, true);
+            }
+            catch (Exception ex)
+            {
+                if (ex.HResult != -2146233079)
+                    throw;
+            }
+
             capture.Start();
             await Task.Delay(Config.Instance.CamTimer);
 
@@ -99,6 +121,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync("result.gif"));
             await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("📤"));
             Directory.Delete("gif", true);
+            File.Delete("result.gif");
             timer.Dispose();
         }
 
@@ -123,6 +146,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             {
                 exeProcess?.WaitForExit();
             }
+
             return Task.CompletedTask;
         }
 
@@ -147,6 +171,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 if (cap.FrameSize.Width == width && cap.FrameSize.Height == height)
                     return cap;
             }
+
             return device.VideoCapabilities.Last();
         }
 
@@ -158,7 +183,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         [RequireEnabled, Command("webcams"), Aliases("wcs"), Description("Lists all available webcams.")]
         public async Task ListCamsCommand(CommandContext ctx)
         {
-            Logger.Log($"Webcam list requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})", LogLevel.Info);
+            Logger.Log($"Webcam list requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
+                LogLevel.Info);
             var result = "**Available Webcams:**\n```\n";
             for (var i = 0; i < Constants.Cameras.Count; i++)
                 result += $"{i} => {Constants.Cameras[i].Name}\n";
