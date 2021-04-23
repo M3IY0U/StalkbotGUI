@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -35,7 +36,16 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             // init capture
             var capture =
                 new VideoCaptureDevice(Constants.Cameras[camIndex].MonikerString);
-            capture.VideoResolution = TrySelectRes(capture, false);
+            try
+            {
+                capture.VideoResolution = TrySelectRes(capture, false);
+            }
+            catch (Exception ex) when (ex.HResult == -2146233079)
+            { }
+            catch (Exception)
+            {
+                throw;
+            }
 
             capture.Start();
 
@@ -73,7 +83,17 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
 
             var capture =
                 new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
-            capture.VideoResolution = TrySelectRes(capture, true);
+            try
+            {
+                capture.VideoResolution = TrySelectRes(capture, false);
+            }
+            catch (Exception ex) when (ex.HResult == -2146233079)
+            { }
+            catch (Exception)
+            {
+                throw;
+            }
+
             capture.Start();
             await Task.Delay(Config.Instance.CamTimer);
 
@@ -99,6 +119,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync("result.gif"));
             await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("📤"));
             Directory.Delete("gif", true);
+            File.Delete("result.gif");
             timer.Dispose();
         }
 

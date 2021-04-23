@@ -26,7 +26,7 @@ namespace StalkbotGUI
         /// </summary>
         private readonly StalkbotClient _client;
         private readonly NotifyIcon _notifyIcon;
-        private const string Version = "1.2";
+        private static readonly Version Version = Version.Parse("1.2");
 
         /// <summary>
         /// Constructor
@@ -178,12 +178,18 @@ namespace StalkbotGUI
                     {
                         response.EnsureSuccessStatusCode();
                         var json = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
-                        if (json[0].tag_name == Version) return;
+                        if (json is null)
+                        {
+                            Logger.Log("Couldn't check for newer version", LogLevel.Warning);
+                            return;
+                        }
+                        var latestRelease = Version.Parse((string) json[0].tag_name);
+                        if (latestRelease <= Version) return;
                         _notifyIcon.Visible = true;
                         _notifyIcon.BalloonTipClicked += OpenReleasePage;
                         _notifyIcon.ShowBalloonTip(3000, "New version available",
                             $"Your version: {Version}\n" +
-                            $"Latest: {json[0].tag_name}", ToolTipIcon.Info);
+                            $"Latest: {latestRelease}", ToolTipIcon.Info);
                         _notifyIcon.Visible = false;
                     }
                 }

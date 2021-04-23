@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using AForge.Video.DirectShow;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using StalkbotGUI.Stalkbot.Discord.Commands;
 using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI
@@ -111,8 +112,15 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void ResolutionSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Config.Instance.CamWidth = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').First());
-            Config.Instance.CamHeight = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').Last());
+            try
+            {
+                Config.Instance.CamWidth = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').First());
+                Config.Instance.CamHeight = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').Last());
+            }
+            catch (Exception)
+            {
+                Logger.Log("Unable to determine camera resolution of the selected camera", LogLevel.Warning);
+            }
         }
 
         /// <summary>
@@ -226,8 +234,15 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void GifResolutionSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Config.Instance.GifCamWidth = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').First());
-            Config.Instance.GifCamHeight = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').Last());
+            try
+            {
+                Config.Instance.GifCamWidth = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').First());
+                Config.Instance.GifCamHeight = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').Last());
+            }
+            catch (Exception) { /* ignored */ }
         }
+
+        private async void TestScreenshotButton_Click(object sender, RoutedEventArgs e)
+            => await Screenshot.TestScreenshotAsync();
     }
 }

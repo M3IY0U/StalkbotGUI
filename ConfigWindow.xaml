@@ -74,8 +74,9 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" Content="Blur Amount" HorizontalAlignment="Right"/>
-                    <TextBox Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Name="BlurInput" HorizontalAlignment="Left" Width="50" TextChanged="BlurInput_TextChanged"/>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Blur Amount" HorizontalAlignment="Right" Margin="0,0,35,0"/>
+                    <TextBox Grid.Column="0" Grid.Row="0" Name="BlurInput" HorizontalAlignment="Left" Width="50" TextChanged="BlurInput_TextChanged" Grid.ColumnSpan="2" Margin="102,0,0,0"/>
+                    <Button Grid.Column="1" x:Name="TestScreenshotButton" Content="Blur Preview" Width="75" Margin="39,3,18,3" Click="TestScreenshotButton_Click"></Button>
                 </Grid>
             </TabItem>
             <TabItem >
