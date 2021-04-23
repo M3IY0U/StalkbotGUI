@@ -211,7 +211,7 @@ namespace StalkbotGUI
             UiHelpers.UpdateButton("play", ref PlayToggle);
             UiHelpers.UpdateButton("tts", ref TtsToggle);
             UiHelpers.UpdateButton("proc", ref ProcToggle);
-            UiHelpers.UpdateButton("clipboard", ref RecordingToggle);
+            UiHelpers.UpdateButton("recording", ref RecordingToggle);
         }
 
         /// <summary>
