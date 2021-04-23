@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using StalkbotGUI.Stalkbot.Discord;
 using StalkbotGUI.Stalkbot.Utilities;
 using StalkbotGUI.Stalkbot.Utilities.UI;
