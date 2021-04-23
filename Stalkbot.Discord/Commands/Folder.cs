@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
 using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
@@ -41,8 +42,12 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             Logger.Log($"Folder requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})" +
                        $"\n\t=> Sending file \"{fileName}\"",
             LogLevel.Info);
+            
+            var msg = new DiscordMessageBuilder()
+                .WithReply(ctx.Message.Id)
+                .WithFile(new FileStream(file, FileMode.Open));
 
-            StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync(file, fileName));
+            StalkbotClient.UpdateLastMessage(await ctx.RespondAsync(msg));
         }
     }
 }

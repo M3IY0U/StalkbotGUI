@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using StalkbotGUI.Stalkbot.Utilities;
@@ -31,17 +32,22 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 LogLevel.Info);
 
             await TakeScreenshot(LiveFilename);
-
+            
             if (Config.Instance.BlurAmount > 0)
             {
                 using (var img = await Image.LoadAsync(LiveFilename))
                 {
                     img.Mutate(x => x.GaussianBlur((float)Config.Instance.BlurAmount));
                     await img.SaveAsync(LiveFilename);
+                    //await img.SaveAsync(stream, JpegFormat.Instance);
                 }
             }
 
-            StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync(LiveFilename));
+            var msg = new DiscordMessageBuilder()
+                .WithReply(ctx.Message.Id)
+                .WithFile(new FileStream(LiveFilename, FileMode.Open));
+
+            StalkbotClient.UpdateLastMessage(await ctx.RespondAsync(msg));
             File.Delete(LiveFilename);
         }
 
@@ -75,31 +81,6 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             }
 
             return Task.CompletedTask;
-        }
-
-        internal static async Task TestScreenshotAsync()
-        {
-            var vScreen = SystemInformation.VirtualScreen;
-            using (var bm = new Bitmap(vScreen.Width, vScreen.Height))
-            {
-                using (var g = Graphics.FromImage(bm))
-                {
-                    g.CopyFromScreen(vScreen.Left, vScreen.Top, 0, 0, bm.Size);
-                }
-                bm.Save(_testFilename);
-            }
-
-            if (Config.Instance.BlurAmount > 0)
-            {
-                using (var img = await Image.LoadAsync(_testFilename))
-                {
-                    img.Mutate(x => x.GaussianBlur((float)Config.Instance.BlurAmount));
-                    await img.SaveAsync(_testFilename);
-                }
-            }
-            Process.Start(_testFilename);
-            await Task.Delay(500);
-            File.Delete(_testFilename);
         }
     }
 }

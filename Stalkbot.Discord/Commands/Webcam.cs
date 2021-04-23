@@ -65,7 +65,10 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 capture.WaitForStop();
             capture.Stop();
             // send/update message and delete file from disk
-            StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync("webcam.png"));
+            var msg = new DiscordMessageBuilder()
+                .WithReply(ctx.Message.Id)
+                .WithFile(new FileStream("webcam.png", FileMode.Open));
+            StalkbotClient.UpdateLastMessage(await ctx.RespondAsync(msg));
             File.Delete("webcam.png");
         }
 
@@ -118,7 +121,12 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("🎥"));
 
             await CreateGif();
-            StalkbotClient.UpdateLastMessage(await ctx.RespondWithFileAsync("result.gif"));
+
+            var msg = new DiscordMessageBuilder()
+                .WithReply(ctx.Message.Id)
+                .WithFile(new FileStream("result.gif", FileMode.Open));
+
+            StalkbotClient.UpdateLastMessage(await ctx.RespondAsync(msg));
             await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("📤"));
             Directory.Delete("gif", true);
             File.Delete("result.gif");

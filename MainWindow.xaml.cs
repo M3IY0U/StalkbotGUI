@@ -28,7 +28,7 @@ namespace StalkbotGUI
         private readonly StalkbotClient _client;
 
         private readonly NotifyIcon _notifyIcon;
-        private static readonly Version Version = Version.Parse("1.2");
+        private static readonly Version Version = Version.Parse("1.3");
 
         /// <summary>
         /// Constructor
@@ -136,14 +136,14 @@ namespace StalkbotGUI
         }
 
         /// <summary>
-        /// Handles clicking the clipboard toggle button
+        /// Handles clicking the recording toggle button
         /// </summary>
         /// <param name="sender">Button object</param>
         /// <param name="e">Event args</param>
         private void RecordingToggle_Click(object sender, RoutedEventArgs e)
         {
             Config.Instance.RecordingEnabled = !Config.Instance.RecordingEnabled;
-            Logger.Log($"Clipboard: {Config.Instance.RecordingEnabled}", LogLevel.Info);
+            Logger.Log($"Recording: {Config.Instance.RecordingEnabled}", LogLevel.Info);
             UiHelpers.UpdateButton("recording", ref RecordingToggle);
             Config.Instance.SaveConfig();
         }
@@ -193,12 +193,11 @@ namespace StalkbotGUI
                         }
                         var latestRelease = Version.Parse((string) json[0].tag_name);
                         if (latestRelease <= Version) return;
-                        _notifyIcon.Visible = true;
-                        _notifyIcon.BalloonTipClicked += OpenReleasePage;
-                        _notifyIcon.ShowBalloonTip(3000, "New version available",
-                            $"Your version: {Version}\n" +
-                            $"Latest: {latestRelease}", ToolTipIcon.Info);
-                        _notifyIcon.Visible = false;
+                        var mb = MessageBox.Show(
+                            $"Your Version: {Version}\nLatest Version: {json[0].tag_name}\nDo you want to download it from GitHub?",
+                            "New Version available!\n", MessageBoxButton.YesNo);
+                        if (mb == MessageBoxResult.Yes)
+                            Process.Start("https://github.com/M3IY0U/StalkbotGUI/releases");
                     }
                 }
             }

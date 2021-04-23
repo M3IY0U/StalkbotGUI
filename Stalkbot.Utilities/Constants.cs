@@ -1,6 +1,5 @@
 ﻿using System.Windows.Media;
 using AForge.Video.DirectShow;
-using NAudio.Wave;
 
 namespace StalkbotGUI.Stalkbot.Utilities
 {

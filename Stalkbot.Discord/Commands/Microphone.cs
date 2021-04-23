@@ -25,7 +25,11 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 source.StopRecording();
                 await Task.Delay(500);
                 await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("🎙"));
-                await ctx.RespondWithFileAsync("recording.wav");
+                var msg = new DiscordMessageBuilder()
+                    .WithReply(ctx.Message.Id)
+                    .WithFile(new FileStream("recording.wav", FileMode.Open));
+
+                await ctx.RespondAsync(msg);
                 File.Delete("recording.wav");
             };
 
