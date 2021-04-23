@@ -242,7 +242,7 @@ namespace StalkbotGUI
             catch (Exception) { }
         }
 
-        private async void TestScrShtBtn_Click(object sender, RoutedEventArgs e)
+        private async void TestScreenshotButton_Click(object sender, RoutedEventArgs e)
             => await Screenshot.TestScreenshotAsync();
     }
 }
