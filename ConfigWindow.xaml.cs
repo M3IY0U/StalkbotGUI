@@ -119,12 +119,7 @@ namespace StalkbotGUI
             }
             catch (Exception)
             {
-                MessageBox.Show(
-                    this,
-                    "Unable to determine camera resolution of your selected camera.",
-                    "Camera resolution",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                Logger.Log("Unable to determine camera resolution of the selected camera", LogLevel.Warning);
             }
         }
 
