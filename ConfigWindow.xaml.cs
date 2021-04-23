@@ -5,8 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using AForge.Video.DirectShow;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using NAudio.CoreAudioApi;
 using NAudio.Wave;
+using StalkbotGUI.Stalkbot.Discord.Commands;
 using StalkbotGUI.Stalkbot.Utilities;
 
 namespace StalkbotGUI
@@ -52,6 +52,8 @@ namespace StalkbotGUI
                 mics.Add(WaveIn.GetCapabilities(i).ProductName);
             MicSelector.ItemsSource = mics;
             MicSelector.SelectedIndex = Config.Instance.MicIndex;
+            MicDelayTxtBx.Text = Config.Instance.MicTimer.ToString();
+            MicLengthTxtBx.Text = Config.Instance.MicLength.ToString();
         }
 
         /// <summary>
@@ -250,6 +252,21 @@ namespace StalkbotGUI
                 Convert.ToInt32(((string) GifResolutionSelector.SelectedItem).Split('x').First());
             Config.Instance.GifCamHeight =
                 Convert.ToInt32(((string) GifResolutionSelector.SelectedItem).Split('x').Last());
+        }
+
+        private void MicDelayTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MicDelayTxtBx.Text))
+                Config.Instance.MicTimer = Convert.ToInt32(MicDelayTxtBx.Text);
+        }
+
+        private async void TestScreenshotButton_Click(object sender, RoutedEventArgs e)
+            => await Screenshot.TestScreenshotAsync();
+
+        private void MicLengthTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MicLengthTxtBx.Text))
+                Config.Instance.MicLength = Convert.ToInt32(MicLengthTxtBx.Text);
         }
     }
 }

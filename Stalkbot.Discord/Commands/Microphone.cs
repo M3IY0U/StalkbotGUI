@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using NAudio.Wave;
 using StalkbotGUI.Stalkbot.Utilities;
+using System.IO;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
@@ -18,10 +14,12 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         [Command("mic"), RequireEnabled]
         public async Task MicTask(CommandContext ctx, int sampleRate = 44100)
         {
+            await Task.Delay(Config.Instance.MicTimer);
+
             var mic = WaveIn.GetCapabilities(0);
-            var source = new WaveInEvent() {DeviceNumber = 0, WaveFormat = new WaveFormat(sampleRate, mic.Channels)};
+            var source = new WaveInEvent() { DeviceNumber = 0, WaveFormat = new WaveFormat(sampleRate, mic.Channels) };
             var writer = new WaveFileWriter("recording.wav", source.WaveFormat);
-            var timer = new Timer {AutoReset = false, Interval = Config.Instance.GifLength};
+            var timer = new Timer { AutoReset = false, Interval = Config.Instance.MicLength };
             timer.Elapsed += async (sender, args) =>
             {
                 source.StopRecording();

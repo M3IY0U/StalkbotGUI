@@ -25,6 +25,8 @@ namespace StalkbotGUI.Stalkbot.Utilities
         // Microphone
         public bool RecordingEnabled { get; set; } = false;
         public int MicIndex { get; set; } = 0;
+        public int MicTimer { get; set; } = 1000;
+        public int MicLength { get; set; } = 5000;
         // Screenshot
         public bool SsEnabled { get; set; } = false;
         public double BlurAmount { get; set; } = 1;
