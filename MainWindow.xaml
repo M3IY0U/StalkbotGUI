@@ -33,7 +33,7 @@
             <Button Grid.Row="2" Grid.Column="0" x:Name="TtsToggle" Content="TTS" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5" Click="TtsToggle_Click"/>
             <Button Grid.Row="2" Grid.Column="1" x:Name="PlayToggle" Content="Play" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5" Click="PlayToggle_Click"/>
             <Button Grid.Row="3" Grid.Column="0" x:Name="ProcToggle" Content="Processes" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5" Click="ProcToggle_Click"/>
-            <Button Grid.Row="3" Grid.Column="1" x:Name="ClipboardToggle" Content="Clipboard" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5" Click="ClipboardToggle_Click"/>
+            <Button Grid.Row="3" Grid.Column="1" x:Name="RecordingToggle" Content="Recording" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Margin="0,5" Click="RecordingToggle_Click"/>
             <Button Grid.Row="4" Grid.Column="0" x:Name="ConfigButton" Content="Config" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,5" Click="ConfigButton_Click"/>
             <Button Grid.Row="4" Grid.Column="1" x:Name="UndoButton" Content="Undo" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,5" Click="UndoButton_Click"/>
         </Grid>

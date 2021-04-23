@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using StalkbotGUI.Stalkbot.Discord;
 using StalkbotGUI.Stalkbot.Utilities;
 using StalkbotGUI.Stalkbot.Utilities.UI;
+using MessageBox = System.Windows.MessageBox;
 using ProgressBar = StalkbotGUI.Stalkbot.Utilities.UI.ProgressBar;
 
 namespace StalkbotGUI
@@ -25,6 +26,7 @@ namespace StalkbotGUI
         /// Client responsible for everything related to "stalking"
         /// </summary>
         private readonly StalkbotClient _client;
+
         private readonly NotifyIcon _notifyIcon;
         private static readonly Version Version = Version.Parse("1.2");
 
@@ -49,9 +51,13 @@ namespace StalkbotGUI
             Task.Delay(1000);
             CheckRequirements();
             CheckForNewRelease();
+#if DEBUG
+            this.Title += " - DEBUG";
+#endif
         }
 
         #region ButtonHandlers
+
         /// <summary>
         /// Handles clicking the off/on button
         /// </summary>
@@ -63,6 +69,7 @@ namespace StalkbotGUI
             OnOffButton.Background = new SolidColorBrush(_client.IsRunning ? Colors.DarkGreen : Colors.DarkRed);
             OnOffButton.Content = _client.IsRunning ? "On" : "Off";
         }
+
         /// <summary>
         /// Handles clicking the webcam toggle button
         /// </summary>
@@ -133,11 +140,11 @@ namespace StalkbotGUI
         /// </summary>
         /// <param name="sender">Button object</param>
         /// <param name="e">Event args</param>
-        private void ClipboardToggle_Click(object sender, RoutedEventArgs e)
+        private void RecordingToggle_Click(object sender, RoutedEventArgs e)
         {
-            Config.Instance.ClipboardEnabled = !Config.Instance.ClipboardEnabled;
-            Logger.Log($"Clipboard: {Config.Instance.ClipboardEnabled}", LogLevel.Info);
-            UiHelpers.UpdateButton("clipboard", ref ClipboardToggle);
+            Config.Instance.RecordingEnabled = !Config.Instance.RecordingEnabled;
+            Logger.Log($"Clipboard: {Config.Instance.RecordingEnabled}", LogLevel.Info);
+            UiHelpers.UpdateButton("recording", ref RecordingToggle);
             Config.Instance.SaveConfig();
         }
 
@@ -174,7 +181,8 @@ namespace StalkbotGUI
                 using (var client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
-                    using (var response = await client.GetAsync("https://api.github.com/repos/M3IY0U/StalkbotGUI/releases"))
+                    using (var response =
+                        await client.GetAsync("https://api.github.com/repos/M3IY0U/StalkbotGUI/releases"))
                     {
                         response.EnsureSuccessStatusCode();
                         var json = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
@@ -194,13 +202,10 @@ namespace StalkbotGUI
                     }
                 }
             }
-            catch { Logger.Log("Couldn't check for new releases", LogLevel.Warning); }
-        }
-
-        private void OpenReleasePage(object sender, EventArgs e)
-        {
-            Process.Start("https://github.com/M3IY0U/StalkbotGUI/releases");
-            _notifyIcon.BalloonTipClicked -= OpenReleasePage;
+            catch
+            {
+                Logger.Log("Couldn't check for new releases", LogLevel.Warning);
+            }
         }
 
         /// <summary>
@@ -213,7 +218,7 @@ namespace StalkbotGUI
             UiHelpers.UpdateButton("play", ref PlayToggle);
             UiHelpers.UpdateButton("tts", ref TtsToggle);
             UiHelpers.UpdateButton("proc", ref ProcToggle);
-            UiHelpers.UpdateButton("clipboard", ref ClipboardToggle);
+            UiHelpers.UpdateButton("recording", ref RecordingToggle);
         }
 
         /// <summary>

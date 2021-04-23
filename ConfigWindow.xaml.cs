@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using AForge.Video.DirectShow;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using NAudio.Wave;
 using StalkbotGUI.Stalkbot.Discord.Commands;
 using StalkbotGUI.Stalkbot.Utilities;
 
@@ -18,7 +19,7 @@ namespace StalkbotGUI
         /// <summary>
         /// Keeps track of the currently selected webcam
         /// </summary>
-        private VideoCaptureDevice _selectedDevice;
+        private VideoCaptureDevice _selectedCam;
 
         /// <summary>
         /// Constructor
@@ -26,7 +27,9 @@ namespace StalkbotGUI
         public ConfigWindow()
         {
             InitializeComponent();
-            FolderLabel.Content = string.IsNullOrEmpty(Config.Instance.FolderPath) ? "No folder selected." : Config.Instance.FolderPath;
+            FolderLabel.Content = string.IsNullOrEmpty(Config.Instance.FolderPath)
+                ? "No folder selected."
+                : Config.Instance.FolderPath;
             DurationInput.Text = $"{Config.Instance.Timeout}";
             BlurInput.Text = $"{Config.Instance.BlurAmount}";
             CamDelayInput.Text = $"{Config.Instance.CamTimer}";
@@ -40,10 +43,17 @@ namespace StalkbotGUI
                 webcams.Add(Constants.Cameras[i].Name);
             CamSelector.ItemsSource = webcams;
             CamSelector.SelectedIndex = Config.Instance.DefaultCam;
-            _selectedDevice = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
+            _selectedCam = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
             GifFps.IsChecked = Config.Instance.GifFps;
             UpdateResBox(true);
             UpdateResBox(false);
+            var mics = new List<string>();
+            for (var i = 0; i < WaveIn.DeviceCount; i++)
+                mics.Add(WaveIn.GetCapabilities(i).ProductName);
+            MicSelector.ItemsSource = mics;
+            MicSelector.SelectedIndex = Config.Instance.MicIndex;
+            MicDelayTxtBx.Text = Config.Instance.MicTimer.ToString();
+            MicLengthTxtBx.Text = Config.Instance.MicLength.ToString();
         }
 
         /// <summary>
@@ -53,7 +63,7 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void FolderSelect_Click(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new CommonOpenFileDialog("Folder Resources") { IsFolderPicker = true })
+            using (var dialog = new CommonOpenFileDialog("Folder Resources") {IsFolderPicker = true})
             {
                 if (dialog.ShowDialog() != CommonFileDialogResult.Ok) return;
                 Config.Instance.FolderPath = dialog.FileName;
@@ -80,9 +90,20 @@ namespace StalkbotGUI
         private void CamSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Config.Instance.DefaultCam = CamSelector.SelectedIndex;
-            _selectedDevice = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
+            _selectedCam = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
             UpdateResBox(true);
             UpdateResBox(false);
+        }
+
+        /// <summary>
+        /// Handles changing the microphone selection
+        /// </summary>
+        /// <param name="sender">Combobox object</param>
+        /// <param name="e">Event args</param>
+        private void MicSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Config.Instance.MicIndex = MicSelector.SelectedIndex;
+            WaveIn.GetCapabilities(Config.Instance.MicIndex);
         }
 
         /// <summary>
@@ -93,18 +114,18 @@ namespace StalkbotGUI
         {
             var cb = isGif ? GifResolutionSelector : ResolutionSelector;
             var items =
-                _selectedDevice.VideoCapabilities.Select(x => $"{x.FrameSize.Width}x{x.FrameSize.Height}").ToList();
+                _selectedCam.VideoCapabilities.Select(x => $"{x.FrameSize.Width}x{x.FrameSize.Height}").ToList();
             cb.ItemsSource = items;
             cb.SelectedIndex =
                 items.FindIndex(s
-                    => s.Contains(isGif 
-                           ? Config.Instance.GifCamWidth.ToString() 
+                    => s.Contains(isGif
+                           ? Config.Instance.GifCamWidth.ToString()
                            : Config.Instance.CamWidth.ToString())
-                    && s.Contains(isGif 
-                           ? Config.Instance.GifCamHeight.ToString() 
+                       && s.Contains(isGif
+                           ? Config.Instance.GifCamHeight.ToString()
                            : Config.Instance.CamHeight.ToString()));
         }
-        
+
         /// <summary>
         /// Handles changing the resolution selection
         /// </summary>
@@ -242,7 +263,19 @@ namespace StalkbotGUI
             catch (Exception) { /* ignored */ }
         }
 
+        private void MicDelayTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MicDelayTxtBx.Text))
+                Config.Instance.MicTimer = Convert.ToInt32(MicDelayTxtBx.Text);
+        }
+
         private async void TestScreenshotButton_Click(object sender, RoutedEventArgs e)
             => await Screenshot.TestScreenshotAsync();
+
+        private void MicLengthTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MicLengthTxtBx.Text))
+                Config.Instance.MicLength = Convert.ToInt32(MicLengthTxtBx.Text);
+        }
     }
 }

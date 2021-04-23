@@ -67,16 +67,42 @@
             </TabItem>
             <TabItem >
                 <TabItem.Header>
-                    <TextBlock Text="Screenshot"></TextBlock>
+                    <TextBlock Text="Screen/Mic"></TextBlock>
                 </TabItem.Header>
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" Content="Blur Amount" HorizontalAlignment="Right" Margin="0,0,35,0"/>
-                    <TextBox Grid.Column="0" Grid.Row="0" Name="BlurInput" HorizontalAlignment="Left" Width="50" TextChanged="BlurInput_TextChanged" Grid.ColumnSpan="2" Margin="102,0,0,0"/>
-                    <Button Grid.Column="1" x:Name="TestScreenshotButton" Content="Blur Preview" Width="75" Margin="39,3,18,3" Click="TestScreenshotButton_Click"></Button>
+                    <Grid Grid.Row="0" Column="0">
+                        <Label Grid.Column="0" Grid.Row="0" Content="Blur Amount" HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="0" Grid.Row="0" Margin="5,0,0,0" Name="BlurInput"
+                                 HorizontalAlignment="Right" Width="50" TextChanged="BlurInput_TextChanged" />
+                    </Grid>
+                    <Grid Grid.Row="0" Column="1">
+                        <Button x:Name="TestScreenshotButton" Content="Blur Preview" Height="20" Width="75" Margin="58,3,0,3" Click="TestScreenshotButton_Click"/>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Label Grid.Column="0" Grid.Row="0" Content="Microphone" HorizontalAlignment="Left" />
+                        <ComboBox Grid.Column="0" HorizontalAlignment="Right" MinWidth="55" Name="MicSelector" SelectionChanged="MicSelector_SelectionChanged"/>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="18*"/>
+                            <ColumnDefinition Width="115*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Mic delay" Grid.ColumnSpan="2" />
+                        <TextBox x:Name="MicDelayTxtBx" Grid.Column="1" Margin="45,0,0,0" TextChanged="MicDelayTextBox_TextChanged"/>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Label Grid.Column="0" Grid.Row="2" Content="Mic length" HorizontalAlignment="Left" />
+                        <TextBox x:Name="MicLengthTxtBx" TextChanged="MicLengthTextBox_TextChanged" Margin="82,1,0,0" />
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem >
@@ -107,7 +133,6 @@
                     <Button Grid.Row="2" Content="Reset" Width="40" Name="FolderClear" Click="FolderClear_Click" Margin="0,5"/>
                 </Grid>
             </TabItem>
-
             <TabItem >
                 <TabItem.Header>
                     <TextBlock Text="Misc"></TextBlock>
