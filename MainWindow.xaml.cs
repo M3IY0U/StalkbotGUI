@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using StalkbotGUI.Stalkbot.Discord;
 using StalkbotGUI.Stalkbot.Utilities;
 using StalkbotGUI.Stalkbot.Utilities.UI;
@@ -26,7 +27,7 @@ namespace StalkbotGUI
         /// </summary>
         private readonly StalkbotClient _client;
         private readonly NotifyIcon _notifyIcon;
-        private const string Version = "1.2";
+        private static readonly Version _version = Version.Parse("1.2");
 
         /// <summary>
         /// Constructor
@@ -177,13 +178,14 @@ namespace StalkbotGUI
                     using (var response = await client.GetAsync("https://api.github.com/repos/M3IY0U/StalkbotGUI/releases"))
                     {
                         response.EnsureSuccessStatusCode();
-                        var json = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
-                        if (json[0].tag_name == Version) return;
+                        JArray json = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
+                        Version latestRelease = Version.Parse((string)((JValue)json.SelectToken("[0].tag_name")).Value);
+                        if (latestRelease <= _version) return;
                         _notifyIcon.Visible = true;
                         _notifyIcon.BalloonTipClicked += OpenReleasePage;
                         _notifyIcon.ShowBalloonTip(3000, "New version available",
-                            $"Your version: {Version}\n" +
-                            $"Latest: {json[0].tag_name}", ToolTipIcon.Info);
+                            $"Your version: {_version}\n" +
+                            $"Latest: {latestRelease}", ToolTipIcon.Info);
                         _notifyIcon.Visible = false;
                     }
                 }
