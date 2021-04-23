@@ -51,6 +51,9 @@ namespace StalkbotGUI
             Task.Delay(1000);
             CheckRequirements();
             CheckForNewRelease();
+#if DEBUG
+            this.Title += " - DEBUG";
+#endif
         }
 
         #region ButtonHandlers
