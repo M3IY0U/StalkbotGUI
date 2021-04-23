@@ -177,9 +177,14 @@ namespace StalkbotGUI
                     using (var response = await client.GetAsync("https://api.github.com/repos/M3IY0U/StalkbotGUI/releases"))
                     {
                         response.EnsureSuccessStatusCode();
-                        JArray json = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
-                        Version latestRelease = Version.Parse((string)((JValue)json.SelectToken("[0].tag_name")).Value);
-                        if (latestRelease <= _version) return;
+                        var json = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
+                        if (json is null)
+                        {
+                            Logger.Log("Couldn't check for newer version", LogLevel.Warning);
+                            return;
+                        }
+                        var latestRelease = Version.Parse((string) json[0].tag_name);
+                        if (latestRelease <= Version) return;
                         _notifyIcon.Visible = true;
                         _notifyIcon.BalloonTipClicked += OpenReleasePage;
                         _notifyIcon.ShowBalloonTip(3000, "New version available",
