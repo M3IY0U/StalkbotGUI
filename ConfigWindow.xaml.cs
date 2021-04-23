@@ -111,8 +111,20 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void ResolutionSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Config.Instance.CamWidth = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').First());
-            Config.Instance.CamHeight = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').Last());
+            try
+            {
+                Config.Instance.CamWidth = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').First());
+                Config.Instance.CamHeight = Convert.ToInt32(((string)ResolutionSelector.SelectedItem).Split('x').Last());
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(
+                    this,
+                    "Unable to determine camera resolution of your selected camera.",
+                    "Camera resolution",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
         }
 
         /// <summary>
@@ -226,8 +238,12 @@ namespace StalkbotGUI
         /// <param name="e">Event args</param>
         private void GifResolutionSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Config.Instance.GifCamWidth = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').First());
-            Config.Instance.GifCamHeight = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').Last());
+            try
+            {
+                Config.Instance.GifCamWidth = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').First());
+                Config.Instance.GifCamHeight = Convert.ToInt32(((string)GifResolutionSelector.SelectedItem).Split('x').Last());
+            }
+            catch (Exception) { }
         }
     }
 }
