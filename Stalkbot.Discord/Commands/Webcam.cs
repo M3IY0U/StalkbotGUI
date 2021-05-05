@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -9,7 +11,12 @@ using AForge.Video.DirectShow;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using FFMpegCore;
+using FFMpegCore.Enums;
+using FFMpegCore.Extend;
+using FFMpegCore.Pipes;
 using StalkbotGUI.Stalkbot.Utilities;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace StalkbotGUI.Stalkbot.Discord.Commands
 {
@@ -99,6 +106,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                     throw;
             }
 
+            //var frames = new List<BitmapVideoFrameWrapper>();
+
             capture.Start();
             await Task.Delay(Config.Instance.CamTimer);
 
@@ -106,10 +115,13 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             var timer = new Timer(Config.Instance.GifLength) { Enabled = true, AutoReset = false };
             timer.Elapsed += (sender, args) => capture.SignalToStop();
 
+            var frames = new List<IVideoFrame>();
+            var width = capture.VideoResolution.FrameSize.Width;
+            var height = capture.VideoResolution.FrameSize.Height;
             var counter = 0;
             capture.NewFrame += (sender, args) =>
             {
-                args.Frame.Save($"gif{Path.DirectorySeparatorChar}{counter++}.png", ImageFormat.Png);
+                frames.Add(new BitmapVideoFrameWrapper(args.Frame.Clone(new Rectangle(0,0,width,height), PixelFormat.DontCare)));
                 args.Frame.Dispose();
             };
 
@@ -120,16 +132,23 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("📤"));
             await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("🎥"));
 
-            await CreateGif();
+            await FFMpegArguments
+                .FromPipeInput(new RawVideoPipeSource(frames), o => o.UsingMultithreading(true))
+                .OutputToFile("result.mp4", true, opt
+                    => opt.WithFastStart().WithVideoCodec(VideoCodec.LibX264))
+                .ProcessAsynchronously();
+
 
             var msg = new DiscordMessageBuilder()
                 .WithReply(ctx.Message.Id)
-                .WithFile(new FileStream("result.gif", FileMode.Open));
+                .WithFile(new FileStream("result.mp4", FileMode.Open));
 
             StalkbotClient.UpdateLastMessage(await ctx.RespondAsync(msg));
             await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("📤"));
             Directory.Delete("gif", true);
             File.Delete("result.gif");
+            frames.Clear();
+            GC.Collect();
             timer.Dispose();
         }
 
@@ -142,7 +161,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             var fps = Config.Instance.GifFps
                 ? $"-r {Directory.GetFiles("gif").Length / (Config.Instance.GifLength / 1000)}"
                 : "";
-            
+
             using (var exeProcess = Process.Start(new ProcessStartInfo
             {
                 FileName = "ffmpeg.exe",
