@@ -22,6 +22,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public int GifCamHeight { get; set; } = 720;
         public int GifLength { get; set; } = 5000;
         public bool GifFps { get; set; } = false;
+        public int CustomGifFps { get; set; } = 0;
         // Microphone
         public bool RecordingEnabled { get; set; } = false;
         public int MicIndex { get; set; } = 0;
@@ -63,6 +64,8 @@ namespace StalkbotGUI.Stalkbot.Utilities
                 $"Webcam:            {(CamEnabled ? "✅" : "❌")}\n" +
                 $"Default Cam:       {DefaultCam} ({Constants.Cameras[DefaultCam].Name})\n" +
                 $"Webcam Gif Length: {GifLength / 1000} second(s)\n" +
+                $"Constant Gif FPS:  {(GifFps ? "✅" : "❌")}\n" +
+                $"Custom Gif FPS:    {(!GifFps && CustomGifFps > 0 ? CustomGifFps + " FPS" : "❌")}\n" +
                 $"Recording:         {(RecordingEnabled ? "✅" : "❌")}\n" +
                 $"Recording Mic:     {WaveIn.GetCapabilities(MicIndex).ProductName}\n" +
                 $"Screenshot:        {(SsEnabled ? "✅" : "❌")}\n" +

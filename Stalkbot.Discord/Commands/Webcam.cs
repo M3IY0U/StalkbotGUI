@@ -76,11 +76,12 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// Command for capturing a gif from the webcam
         /// </summary>
         /// <param name="ctx">Context this command has been executed in</param>
+        /// <param name="comArgs">Params for making the gif: Custom FPS setting for single use sped up or slowed down gifs</param>
         /// <returns>The built task</returns>
         [RequireEnabled, Command("webcamgif"), Aliases("gif", "wcg", "wcgif"),
          Cooldown(1, 10, CooldownBucketType.Global),
          Description("Creates a gif from the webcam.")]
-        public async Task GifTask(CommandContext ctx)
+        public async Task GifTask(CommandContext ctx, [Description("FPS value to set the gif at")] params string[] comArgs)
         {
             Directory.CreateDirectory("gif");
             Logger.Log($"Webcam Gif requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
@@ -120,7 +121,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("📤"));
             await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("🎥"));
 
-            await CreateGif();
+            await CreateGif(comArgs);
 
             var msg = new DiscordMessageBuilder()
                 .WithReply(ctx.Message.Id)
@@ -137,16 +138,29 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         /// Creates a gif from an image sequence
         /// </summary>
         /// <returns>The built task</returns>
-        private static Task CreateGif()
+        private static Task CreateGif(string[] args)
         {
-            var fps = Config.Instance.GifFps
-                ? $"-r {Directory.GetFiles("gif").Length / (Config.Instance.GifLength / 1000)}"
-                : "";
+            // check if an fps arg was sent
+            var fps = args.Length > 0 ? Convert.ToInt32(args[0]) : 0; 
+            var fpsString = "";
+            if (Config.Instance.CustomGifFps > 0 || Config.Instance.GifFps || fps > 0)
+            {
+                if (fps == 0)
+                {
+                    fps = Config.Instance.GifFps ? Directory.GetFiles("gif").Length / (Config.Instance.GifLength / 1000) : Config.Instance.CustomGifFps;
+                } else
+                {
+                    //clamp the value of custom argument fps, needs file amount as upper limit because we can't realistically go under 1s
+                    var maxFps = Directory.GetFiles("gif").Length;
+                    fps = Math.Max(1, Math.Min(fps, maxFps));
+                }
+                fpsString = $"-r {fps}";
+            }
             
             using (var exeProcess = Process.Start(new ProcessStartInfo
             {
                 FileName = "ffmpeg.exe",
-                Arguments = $"-y {fps} -i gif{Path.DirectorySeparatorChar}%d.png -vf \"scale=400:-1\" result.gif",
+                Arguments = $"-y {fpsString} -i gif{Path.DirectorySeparatorChar}%d.png -vf \"scale=400:-1\" result.gif",
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true
