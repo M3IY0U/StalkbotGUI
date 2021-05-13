@@ -63,7 +63,6 @@
                         <CheckBox x:Name="GifFps" Grid.Column="1" HorizontalAlignment="Left" Margin="0,5,0,0" Click="GifFps_Click"/>
                         <Label Grid.Column="2" Content="Gif Resolution" HorizontalAlignment="Left"/>
                         <ComboBox Grid.Column="3" HorizontalAlignment="Right" MinWidth="95" Margin="5,0,0,0" Name="GifResolutionSelector" SelectionChanged="GifResolutionSelector_SelectionChanged"/>
-                        
                     </Grid>
                     <Grid Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0">
                         <Grid.ColumnDefinitions>

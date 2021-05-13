@@ -23,7 +23,6 @@ namespace StalkbotGUI.Stalkbot.Utilities
         public int GifLength { get; set; } = 5000;
         public bool GifFps { get; set; } = false;
         public int CustomGifFps { get; set; } = 0;
-
         // Microphone
         public bool RecordingEnabled { get; set; } = false;
         public int MicIndex { get; set; } = 0;

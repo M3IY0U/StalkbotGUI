@@ -252,7 +252,12 @@ namespace StalkbotGUI
                 CustomGifFpsInput.IsEnabled = !GifFps.IsChecked.Value;
             }
         }
-
+        
+        /// <summary>
+        /// Handles text changing in the custom gif fps input
+        /// </summary>
+        /// <param name="sender">Textbox input</param>
+        /// <param name="e">Event args</param>
         private void CustomGifFpsInput_TextChanged(object sender, TextChangedEventArgs e)
             => Config.Instance.CustomGifFps = int.Parse(CustomGifFpsInput.Text);
         
