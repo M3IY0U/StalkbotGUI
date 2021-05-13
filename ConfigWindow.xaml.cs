@@ -45,6 +45,8 @@ namespace StalkbotGUI
             CamSelector.SelectedIndex = Config.Instance.DefaultCam;
             _selectedCam = new VideoCaptureDevice(Constants.Cameras[Config.Instance.DefaultCam].MonikerString);
             GifFps.IsChecked = Config.Instance.GifFps;
+            CustomGifFpsInput.Text = $"{Config.Instance.CustomGifFps}";
+            CustomGifFpsInput.IsEnabled = !Config.Instance.GifFps;
             UpdateResBox(true);
             UpdateResBox(false);
             var mics = new List<string>();
@@ -245,9 +247,15 @@ namespace StalkbotGUI
         private void GifFps_Click(object sender, RoutedEventArgs e)
         {
             if (GifFps.IsChecked.HasValue)
+            {
                 Config.Instance.GifFps = GifFps.IsChecked.Value;
+                CustomGifFpsInput.IsEnabled = !GifFps.IsChecked.Value;
+            }
         }
 
+        private void CustomGifFpsInput_TextChanged(object sender, TextChangedEventArgs e)
+            => Config.Instance.CustomGifFps = int.Parse(CustomGifFpsInput.Text);
+        
         /// <summary>
         /// Handles changing the gif resolution selection
         /// </summary>
