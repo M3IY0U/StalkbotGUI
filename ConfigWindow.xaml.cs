@@ -276,19 +276,34 @@ namespace StalkbotGUI
             catch (Exception) { /* ignored */ }
         }
 
+        /// <summary>
+        /// Handles text changing in the MicDelay input
+        /// </summary>
+        /// <param name="sender">Textbox object</param>
+        /// <param name="e">Event args</param>
         private void MicDelayTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!string.IsNullOrEmpty(MicDelayTxtBx.Text))
                 Config.Instance.MicTimer = Convert.ToInt32(MicDelayTxtBx.Text);
         }
 
-        private async void TestScreenshotButton_Click(object sender, RoutedEventArgs e)
-            => await Screenshot.TestScreenshotAsync();
-
+        /// <summary>
+        /// Handles text changing in the MicLength input
+        /// </summary>
+        /// <param name="sender">Textbox object</param>
+        /// <param name="e">Event args</param>
         private void MicLengthTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!string.IsNullOrEmpty(MicLengthTxtBx.Text))
                 Config.Instance.MicLength = Convert.ToInt32(MicLengthTxtBx.Text);
         }
+
+        /// <summary>
+        /// Handles clicking the Screenshot test button
+        /// </summary>
+        /// <param name="sender">Button object</param>
+        /// <param name="e">Event args</param>
+        private async void TestScreenshotButton_Click(object sender, RoutedEventArgs e)
+            => await Screenshot.TestScreenshotAsync(float.Parse(BlurInput.Text));
     }
 }

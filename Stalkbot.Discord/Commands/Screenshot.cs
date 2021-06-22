@@ -39,7 +39,6 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 {
                     img.Mutate(x => x.GaussianBlur((float)Config.Instance.BlurAmount));
                     await img.SaveAsync(LiveFilename);
-                    //await img.SaveAsync(stream, JpegFormat.Instance);
                 }
             }
 
@@ -51,7 +50,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             File.Delete(LiveFilename);
         }
 
-        internal static async Task TestScreenshotAsync()
+        internal static async Task TestScreenshotAsync(float blurAmount)
         {
             await TakeScreenshot(TestFilename);
 
@@ -59,7 +58,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             {
                 using (var img = await Image.LoadAsync(TestFilename))
                 {
-                    img.Mutate(x => x.GaussianBlur((float)Config.Instance.BlurAmount));
+                    img.Mutate(x => x.GaussianBlur(blurAmount));
                     await img.SaveAsync(TestFilename);
                 }
             }
