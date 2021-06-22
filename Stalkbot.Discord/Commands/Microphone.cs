@@ -16,8 +16,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
         {
             await Task.Delay(Config.Instance.MicTimer);
 
-            var mic = WaveIn.GetCapabilities(0);
-            var source = new WaveInEvent() { DeviceNumber = 0, WaveFormat = new WaveFormat(sampleRate, mic.Channels) };
+            var mic = WaveIn.GetCapabilities(Config.Instance.MicIndex);
+            var source = new WaveInEvent() { DeviceNumber = Config.Instance.MicIndex, WaveFormat = new WaveFormat(sampleRate, 1) };
             var writer = new WaveFileWriter("recording.wav", source.WaveFormat);
             var timer = new Timer { AutoReset = false, Interval = Config.Instance.MicLength };
             timer.Elapsed += async (sender, args) =>
@@ -29,7 +29,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                     .WithReply(ctx.Message.Id)
                     .WithFile(new FileStream("recording.wav", FileMode.Open));
 
-                await ctx.RespondAsync(msg);
+                StalkbotClient.UpdateLastMessage(await ctx.RespondAsync(msg));
                 File.Delete("recording.wav");
             };
 
