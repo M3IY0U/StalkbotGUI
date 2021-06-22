@@ -35,8 +35,8 @@ Arguments in `<>` are required, those in `[]` are optional.
     + Uses the Windows built-in TTS Engine to tell the user something. `p!tts <text>`
 + Processes
     + Lists your 15 most RAM-heavy processes with their uptimes. `p!processes`
-+ Clipboard
-    + Either posts what you have currently in your clipboard, or sets it to whatever the command was called with. `p!clipboard [content]`
++ Microphone
+    + Records a configurable clip from your microphone (length and delay configurable). `p!mic [sampleRate]`
 + Folder
     + Sends a random (or specific) file from the configured folder (if it's below discord 8mb size limit). `p!folder [search]`
 
