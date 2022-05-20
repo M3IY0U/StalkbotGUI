@@ -33,7 +33,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 File.Delete("recording.wav");
             };
 
-            Logger.Log($"Started recording with mic {mic.ProductName}", LogLevel.Info);
+            Logger.Log($"Microphone requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
+                LogLevel.Info);
 
             source.DataAvailable += (sender, args) =>
             {
