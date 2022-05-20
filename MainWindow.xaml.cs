@@ -28,7 +28,7 @@ namespace StalkbotGUI
         private readonly StalkbotClient _client;
 
         private readonly NotifyIcon _notifyIcon;
-        private static readonly Version Version = Version.Parse("1.3");
+        private static readonly Version Version = Version.Parse("1.4");
 
         /// <summary>
         /// Constructor
