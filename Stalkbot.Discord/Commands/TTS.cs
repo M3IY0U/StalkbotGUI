@@ -23,14 +23,14 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             Logger.Log($"TTS requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
                 LogLevel.Info);
             var p = new Prompt(input);
-            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("📣"));
+            await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("📣"), ctx.Message);
 
             if (!await SpeakAudio(p))
-                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🛑"));
+                await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("🛑"), ctx.Message);
             else // went smoothly
-                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("✅"));
+                await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("✅"), ctx.Message);
 
-            await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("📣"));
+            await CommandHelper.TryRemoveFeedbackEmoji(DiscordEmoji.FromUnicode("📣"), ctx.Message);
         }
 
         /// <summary>

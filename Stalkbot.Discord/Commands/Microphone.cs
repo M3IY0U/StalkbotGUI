@@ -24,7 +24,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             {
                 source.StopRecording();
                 await Task.Delay(500);
-                await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("🎙"));
+                await CommandHelper.TryRemoveFeedbackEmoji(DiscordEmoji.FromUnicode("🎙"), ctx.Message);
                 var msg = new DiscordMessageBuilder()
                     .WithReply(ctx.Message.Id)
                     .WithFile(new FileStream("recording.wav", FileMode.Open));
@@ -62,7 +62,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             };
             timer.Start();
             source.StartRecording();
-            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🎙"));
+            await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("🎙"), ctx.Message);
         }
     }
 }

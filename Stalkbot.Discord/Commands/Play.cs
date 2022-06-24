@@ -57,7 +57,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             Logger.Log($"Play requested by {ctx.User.Username} in #{ctx.Channel.Name} ({ctx.Guild.Name})",
                 LogLevel.Info);
             // file is being processed
-            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("♨"));
+            await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("♨"), ctx.Message);
 
             if (!await Download(url))
                 throw new Exception("Error downloading audio");
@@ -65,18 +65,18 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 (time == 0) ? "" : $"-ss {time} ");
 
             //done processing
-            await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("♨"));
+            await CommandHelper.TryRemoveFeedbackEmoji(DiscordEmoji.FromUnicode("♨"), ctx.Message);
 
             // start playing
-            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("▶"));
+            await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("▶"), ctx.Message);
             if (!await PlayAudio()) // timeout limit hit
-                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🛑"));
+                await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("🛑"), ctx.Message);
             else // went smoothly
-                await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("✅"));
+                await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("✅"), ctx.Message);
 
             try
             {
-                await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("▶"));
+                await CommandHelper.TryRemoveFeedbackEmoji(DiscordEmoji.FromUnicode("▶"), ctx.Message);
                 File.Delete("temp.wav");
                 File.Delete("final.wav");
             }

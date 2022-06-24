@@ -53,7 +53,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             // wait for configured time
             await Task.Delay(Config.Instance.CamTimer);
             // capture photo
-            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("📸"));
+            await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("📸"), ctx.Message);
             capture.NewFrame += (sender, args) =>
             {
                 args.Frame.Save("webcam.png");
@@ -103,7 +103,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
             capture.Start();
             await Task.Delay(Config.Instance.CamTimer);
 
-            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🎥"));
+            await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("🎥"), ctx.Message);
             var timer = new Timer(Config.Instance.GifLength) { Enabled = true, AutoReset = false };
             timer.Elapsed += (sender, args) => capture.SignalToStop();
 
@@ -118,8 +118,8 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 capture.WaitForStop();
             capture.Stop();
 
-            await ctx.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("📤"));
-            await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("🎥"));
+            await CommandHelper.TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("📤"), ctx.Message);
+            await CommandHelper.TryRemoveFeedbackEmoji(DiscordEmoji.FromUnicode("🎥"), ctx.Message);
 
             await CreateGif(comArgs);
 
@@ -128,7 +128,7 @@ namespace StalkbotGUI.Stalkbot.Discord.Commands
                 .WithFile(new FileStream("result.gif", FileMode.Open));
 
             StalkbotClient.UpdateLastMessage(await ctx.RespondAsync(msg));
-            await ctx.Message.DeleteOwnReactionAsync(DiscordEmoji.FromUnicode("📤"));
+            await CommandHelper.TryRemoveFeedbackEmoji(DiscordEmoji.FromUnicode("📤"), ctx.Message);
             Directory.Delete("gif", true);
             File.Delete("result.gif");
             timer.Dispose();

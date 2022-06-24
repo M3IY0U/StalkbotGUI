@@ -33,7 +33,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
                 ? files
                 : dirs.Aggregate(files, (current, dir) => current.Union(SearchFiles(dir)).ToArray());
         }
-        
+
         /// <summary>
         /// Handles a command error
         /// </summary>
@@ -45,7 +45,7 @@ namespace StalkbotGUI.Stalkbot.Utilities
             // "ignore" non-existent commands
             if (e.Exception.Message.Contains("command was not found"))
             {
-                await e.Context.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("❓"));
+                await TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("❓"), e.Context.Message);
                 return;
             }
 
@@ -58,22 +58,39 @@ namespace StalkbotGUI.Stalkbot.Utilities
                     Logger.Log(
                         $"{e.Context.User.Username} used {e.Command.Name} command in #{e.Context.Channel.Name}, but it was disabled.",
                         LogLevel.Warning);
-                    await e.Context.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("🔕"));
+                    await TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("🔕"), e.Context.Message);
                     return;
                 }
 
                 // check if the command was on cooldown
                 if (ex.FailedChecks.OfType<CooldownAttribute>().Any())
                 {
-                    await e.Context.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("⌛"));
+                    await TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("⌛"), e.Context.Message);
                     return;
                 }
             }
             catch { /* ignored */ }
 
             // log an actual error
-            await e.Context.Message.CreateReactionAsync(DiscordEmoji.FromUnicode("❌"));
+            await TryAddFeedbackEmoji(DiscordEmoji.FromUnicode("❌"), e.Context.Message);
             Logger.Log($"Exception in command {e.Command.Name}! Message: {e.Exception.Message}", LogLevel.Error);
+        }
+
+        public static async Task TryAddFeedbackEmoji(DiscordEmoji emoji, DiscordMessage msg)
+        {
+            try
+            {
+                await msg.CreateReactionAsync(emoji);
+            }
+            catch { /* ignored */ }
+        }
+        public static async Task TryRemoveFeedbackEmoji(DiscordEmoji emoji, DiscordMessage msg)
+        {
+            try
+            {
+                await msg.DeleteOwnReactionAsync(emoji);
+            }
+            catch { /* ignored */ }
         }
     }
 }
